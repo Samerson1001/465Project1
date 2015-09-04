@@ -16,4 +16,9 @@ In the terminal type :  make
 
 Game play instructions (to be further adjusted)
 
-Spaceship basic controls wasd
+Spaceship basic controls 
+  W - Move North
+  A - Move West
+  S - Move South
+  D - Move East
+Diagonal keys not yet decided
