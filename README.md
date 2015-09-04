@@ -6,6 +6,7 @@ Basic Game Description:
 The objective of the game will be flying a spaceship in space while avoiding oncoming meteors.
 
 Build instructions:
+
 Download all the files.
 Once downloaded, pull up the file folder - Run - make
                                                - make run
