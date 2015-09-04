@@ -1,11 +1,7 @@
 /******************************************************************************
 // Class: Software Engineering
 ******************************************************************************/
-/******************************************************************************
-// Lazy Foo web tutorials were used as a rough outline to help code the
-// functions. Nothing was directly copied, only used as visual reference to
-// help set up the initial program
-******************************************************************************/
+
 #include <SDL.h>
 #include <stdio.h>
 
