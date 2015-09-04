@@ -8,11 +8,8 @@ The objective of the game will be flying a spaceship in space while avoiding onc
 Build instructions:
 
 Download all the files.
-Once downloaded, pull up the file folder called SpaceAdventure
-
-In the terminal type :  make
-                     :  make run
-
+Once downloaded, pull up the file folder - Run - make
+                                               - make run
 
 Game play instructions (to be further adjusted)
 
