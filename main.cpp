@@ -57,7 +57,7 @@ bool media()
     bool success = true;
 
     // Image
-    gXOut = SDL_LoadBMP("hello_world.bmp");
+    gXOut = SDL_LoadBMP("465Project1/hello_world.bmp");
     if (gXOut == NULL)
     {
         success = false;
