@@ -1,65 +1,81 @@
-/******************************************************************************
-// Class: Software Engineering
-******************************************************************************/
-/******************************************************************************
-// Lazy Foo web tutorials were used as a rough outline to help code the
-// functions. Nothing was directly copied, only used as visual reference to
-// help set up the initial program
-******************************************************************************/
+/*This source code copyrighted by Lazy Foo' Productions (2004-2015)
+and may not be redistributed without written permission.*/
+
+//Using SDL, standard IO, and strings
 #include <SDL.h>
 #include <stdio.h>
+#include <string>
 
-const int SCREEN_WIDTH = 1280;
-const int SCREEN_HEIGHT = 1024;
+//Screen dimension constants
+const int SCREEN_WIDTH = 640;
+const int SCREEN_HEIGHT = 480;
 
+//Starts up SDL and creates window
 bool init();
-bool media();
+
+//Loads media
+bool loadMedia();
+
+//Frees media and shuts down SDL
 void close();
 
-// Game Screen Window
+//Loads individual image
+SDL_Surface* loadSurface( std::string path );
+
+//The window we'll be rendering to
 SDL_Window* gWindow = NULL;
-// Surface of the Window
+    
+//The surface contained by the window
 SDL_Surface* gScreenSurface = NULL;
-//Image loaded onto screen
-SDL_Surface* gXOut = NULL;
+
+SDL_Surface* sheep = NULL;
+
+//Current displayed image
+SDL_Surface* gStretchedSurface = NULL;
 
 bool init()
 {
-    // Flag
-	bool success = true;
-
-	//Initialize
-	if( SDL_Init( SDL_INIT_VIDEO ) < 0 )
-	{
-		success = false;
-	}
-	else
-	{
-		//Create window
-		gWindow = SDL_CreateWindow("Hello World", SDL_WINDOWPOS_UNDEFINED, SDL_WINDOWPOS_UNDEFINED, SCREEN_WIDTH, SCREEN_HEIGHT, SDL_WINDOW_SHOWN );
-		if( gWindow == NULL )
-		{
-			success = false;
-		}
-		else
-		{
-			//Get window surface
-			gScreenSurface = SDL_GetWindowSurface(gWindow);
-		}
-	}
-
-	return success;
-}
-
-bool media()
-{
-    // Flag
+    //Initialization flag
     bool success = true;
 
-    // Image
-    gXOut = SDL_LoadBMP("hello_world.bmp");
-    if (gXOut == NULL)
+    //Initialize SDL
+    if( SDL_Init( SDL_INIT_VIDEO ) < 0 )
     {
+        printf( "SDL could not initialize! SDL Error: %s\n", SDL_GetError() );
+        success = false;
+    }
+    else
+    {
+        //Create window
+        gWindow = SDL_CreateWindow( "SDL Tutorial", SDL_WINDOWPOS_UNDEFINED, SDL_WINDOWPOS_UNDEFINED, SCREEN_WIDTH, SCREEN_HEIGHT, SDL_WINDOW_SHOWN );
+        if( gWindow == NULL )
+        {
+            printf( "Window could not be created! SDL Error: %s\n", SDL_GetError() );
+            success = false;
+        }
+        else
+        {
+            //Get window surface
+            gScreenSurface = SDL_GetWindowSurface( gWindow );
+            sheep = SDL_GetWindowSurface (gWindow);
+        }
+    }
+
+    return success;
+}
+
+bool loadMedia()
+{
+    //Loading success flag
+    bool success = true;
+
+    //Load stretching surface
+    gStretchedSurface = loadSurface( "tiger.bmp" );
+    sheep = loadSurface("sheep.bmp");
+
+    if( gStretchedSurface == NULL )
+    {
+        printf( "Failed to load stretching image!\n" );
         success = false;
     }
 
@@ -68,61 +84,132 @@ bool media()
 
 void close()
 {
-	//Deallocate surface
-	SDL_FreeSurface(gXOut);
-	gXOut = NULL;
+    //Free loaded image
+    SDL_FreeSurface( gStretchedSurface );
+    gStretchedSurface = NULL;
 
-	//Destroy window
-	SDL_DestroyWindow(gWindow);
-	gWindow = NULL;
+    SDL_FreeSurface (sheep);
+    sheep = NULL;
 
-	//Quit SDL 
-	SDL_Quit();
+    //Destroy window
+    SDL_DestroyWindow( gWindow );
+    gWindow = NULL;
+
+    //Quit SDL subsystems
+    SDL_Quit();
 }
 
-int main(int argc, char* args[])
+SDL_Surface* loadSurface( std::string path )
 {
-    if(!init())
+    //The final optimized image
+    SDL_Surface* optimizedSurface = NULL;
+
+    //Load image at specified path
+    SDL_Surface* loadedSurface = SDL_LoadBMP( path.c_str() );
+    if( loadedSurface == NULL )
     {
-        printf("Init failed\n");
+        printf( "Unable to load image %s! SDL Error: %s\n", path.c_str(), SDL_GetError() );
     }
     else
     {
-        if (!media())
+        //Convert surface to screen format
+        optimizedSurface = SDL_ConvertSurface( loadedSurface, gScreenSurface->format, 0 );
+        //optimizedSurface = SDL_ConvertSurface( loadedSurface, sheep->format, NULL );
+        if( optimizedSurface == NULL )
         {
-              printf("Media failed\n");
+            printf( "Unable to optimize image %s! SDL Error: %s\n", path.c_str(), SDL_GetError() );
+        }
+
+        //Get rid of old loaded surface
+        SDL_FreeSurface( loadedSurface );
+    }
+
+    return optimizedSurface;
+}
+
+int spaceX = 300;
+int spaceY = 200;
+
+int main( int argc, char* args[] )
+{
+    //Start up SDL and create window
+    if( !init() )
+    {
+        printf( "Failed to initialize!\n" );
+    }
+    else
+    {
+        //Load media
+        if( !loadMedia() )
+        {
+            printf( "Failed to load media!\n" );
         }
         else
-        {
-            // Loop flag
+        {   
+            //Main loop flag
             bool quit = false;
 
-            // Event
+            //Event handler
             SDL_Event e;
 
-            // Application x run
-            while (!quit)
+            //While application is running
+            while( !quit )
             {
-                // Event queue
-                while (SDL_PollEvent(&e) != 0)
+                //Handle events on queue
+                while( SDL_PollEvent( &e ) != 0 )
                 {
-                    // User quit
-                    if (e.type == SDL_QUIT)
+                    //User requests quit
+                    if( e.type == SDL_QUIT )
                     {
                         quit = true;
                     }
+
+                    //else if(e.type == SDL_KEYDOWN)
+                    //{ 
+                        if (e.key.keysym.sym == SDLK_w)
+                        {
+                            spaceY -= 10;
+                        }
+
+                        if (e.key.keysym.sym == SDLK_s)
+                        {
+                            spaceY += 10;
+                        }
+
+                        if (e.key.keysym.sym == SDLK_a)
+                        {
+                            spaceX -= 10;
+                        }
+
+                        if (e.key.keysym.sym == SDLK_d)
+                        {
+                            spaceX += 10;
+                        }
+                    //}
                 }
 
-                // Paint image onto screen
-                SDL_BlitSurface(gXOut, NULL, gScreenSurface, NULL);
+                //Apply the image stretched
+                SDL_Rect stretchRect;
+                SDL_Rect background;
+                background.x = 0;
+                background.y = 0;
+                background.w = SCREEN_WIDTH;
+                background.h = SCREEN_HEIGHT;
+                stretchRect.x = spaceX;
+                stretchRect.y = spaceY;
+                stretchRect.w = 100;
+                stretchRect.h = 100;
 
-                // Update the game screen
-                SDL_UpdateWindowSurface(gWindow);
+                SDL_BlitScaled( gStretchedSurface, NULL, gScreenSurface, &background );
+                SDL_BlitScaled( sheep, NULL, gScreenSurface, &stretchRect );
+            
+                //Update the surface
+                SDL_UpdateWindowSurface( gWindow );
             }
         }
     }
 
-    // Free memory and exit out of SDL
+    //Free resources and close SDL
     close();
 
     return 0;
