@@ -57,7 +57,6 @@ bool init()
         {
             //Get window surface
             gScreenSurface = SDL_GetWindowSurface( gWindow );
-            sheep = SDL_GetWindowSurface (gWindow);
         }
     }
 
@@ -90,6 +89,10 @@ void close()
 
     SDL_FreeSurface (sheep);
     sheep = NULL;
+
+    SDL_FreeSurface (gScreenSurface);
+    gScreenSurface = NULL;
+
 
     //Destroy window
     SDL_DestroyWindow( gWindow );
@@ -156,7 +159,7 @@ int main( int argc, char* args[] )
             while( !quit )
             {
                 //Handle events on queue
-                while( SDL_PollEvent( &e ) != 0 )
+                if( SDL_PollEvent( &e ) != 0 )
                 {
                     //User requests quit
                     if( e.type == SDL_QUIT )
