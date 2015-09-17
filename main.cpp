@@ -69,8 +69,8 @@ bool loadMedia()
     bool success = true;
 
     //Load stretching surface
-    gStretchedSurface = loadSurface( "tiger.bmp" );
-    sheep = loadSurface("sheep.bmp");
+    gStretchedSurface = loadSurface( "images/tiger.bmp" );
+    sheep = loadSurface("images/sheep.bmp");
 
     if( gStretchedSurface == NULL )
     {
