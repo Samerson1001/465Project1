@@ -1,5 +1,4 @@
 # 465Project1
-<<<<<<< HEAD
 Spaceship project for CISS 465
 =======
 Spaceship project for CISS465
@@ -25,4 +24,3 @@ Spaceship basic controls
   S - Move South
   D - Move East
 Diagonal keys not yet decided
->>>>>>> ac4279187aa19d76d6639a2283d57a24ff39bbf5
