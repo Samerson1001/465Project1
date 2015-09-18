@@ -23,7 +23,7 @@ public:
 
     void left()
     {
-        if (ast.x < 100)
+        if (ast.x < 20)
         {
             screen = false;
             ast.x = 640;

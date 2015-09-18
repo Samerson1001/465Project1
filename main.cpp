@@ -5,59 +5,12 @@ and may not be redistributed without written permission.*/
 #include <SDL.h>
 #include <stdio.h>
 #include <string>
-<<<<<<< HEAD
 #include "constants.h"
 #include <SDL_image.h>
 #include "asteroid.h"
 
 Asteroid asteroid[100];
 
-bool init()
-{
-	//Initialization flag
-	bool success = true;
-
-	//Initialize SDL
-	if( SDL_Init( SDL_INIT_VIDEO ) < 0 )
-	{
-		printf( "SDL could not initialize! SDL Error: %s\n", SDL_GetError() );
-		success = false;
-	}
-	else
-	{
-		//Create window
-		gWindow = SDL_CreateWindow( "SDL Tutorial", SDL_WINDOWPOS_UNDEFINED, SDL_WINDOWPOS_UNDEFINED, SCREEN_WIDTH, SCREEN_HEIGHT, SDL_WINDOW_SHOWN );
-		if( gWindow == NULL )
-		{
-			printf( "Window could not be created! SDL Error: %s\n", SDL_GetError() );
-			success = false;
-		}
-		else
-		{
-			//Get window surface
-			gScreenSurface = SDL_GetWindowSurface( gWindow );
-		}
-	}
-
-	return success;
-}
-
-void close()
-{
-	//Destroy window
-	SDL_DestroyWindow( gWindow );
-	gWindow = NULL;
-
-	//Quit SDL subsystems
-	SDL_Quit();
-}
-
-void print(Asteroid & Asteroid)
-{
-    SDL_BlitScaled(Asteroid.asteroid, NULL,
-                   gScreenSurface, &Asteroid.ast);
-                
-}
 
 void terr_generation()
 {
@@ -67,34 +20,8 @@ void terr_generation()
         {
             asteroid[i].screen = true;
         }
-=======
-
-//Screen dimension constants
-const int SCREEN_WIDTH = 640;
-const int SCREEN_HEIGHT = 480;
-
-//Starts up SDL and creates window
-bool init();
-
-//Loads media
-bool loadMedia();
-
-//Frees media and shuts down SDL
-void close();
-
-//Loads individual image
-SDL_Surface* loadSurface( std::string path );
-
-//The window we'll be rendering to
-SDL_Window* gWindow = NULL;
-    
-//The surface contained by the window
-SDL_Surface* gScreenSurface = NULL;
-
-SDL_Surface* sheep = NULL;
-
-//Current displayed image
-SDL_Surface* gStretchedSurface = NULL;
+    }
+}
 
 bool init()
 {
@@ -132,10 +59,10 @@ bool loadMedia()
     bool success = true;
 
     //Load stretching surface
-    gStretchedSurface = loadSurface( "images/tiger.bmp" );
-    sheep = loadSurface("images/sheep.bmp");
+    //gStretchedSurface = loadSurface( "images/tiger.bmp" );
+    sheep = SDL_LoadBMP("images/sheep.bmp");
 
-    if( gStretchedSurface == NULL )
+    if( sheep == NULL )
     {
         printf( "Failed to load stretching image!\n" );
         success = false;
@@ -175,15 +102,26 @@ SDL_Surface* loadSurface( std::string path )
     if( loadedSurface == NULL )
     {
         printf( "Unable to load image %s! SDL Error: %s\n", path.c_str(), SDL_GetError() );
->>>>>>> 3f06a127bb6bfcd5e180014fdc4517e5f53b17d4
+        
+        //Convert surface to screen format
+        optimizedSurface = SDL_ConvertSurface( loadedSurface, gScreenSurface->format, 0 );
+        //optimizedSurface = SDL_ConvertSurface( loadedSurface, sheep->format, NULL );
+        if( optimizedSurface == NULL )
+        {
+            printf( "Unable to optimize image %s! SDL Error: %s\n", path.c_str(), SDL_GetError() );
+        }
+        
+        //Get rid of old loaded surface
+        SDL_FreeSurface( loadedSurface );
     }
+    
+    return optimizedSurface;
 }
 
 void terr_print()
 {
     for (int i = 0; i < 100; ++i)
     {
-<<<<<<< HEAD
         if (asteroid[i].screen)
         {
             asteroid[i].left();
@@ -193,50 +131,6 @@ void terr_print()
         
     }
 }
-
-int main( int argc, char* args[] )
-{
-	//Start up SDL and create window
-	if( !init() )
-	{
-		printf( "Failed to initialize!\n" );
-	}
-	else
-	{	
-        //Main loop flag
-        bool quit = false;
-        //Event handler
-        SDL_Event e;
-        int counter = 0;
-        //While application is running
-        while( !quit )
-        {
-            //Handle events on queue
-            while( SDL_PollEvent( &e ) != 0 )
-            {
-                //User requests quit
-                if( e.type == SDL_QUIT )
-                {
-                    quit = true;
-                }
-=======
-        //Convert surface to screen format
-        optimizedSurface = SDL_ConvertSurface( loadedSurface, gScreenSurface->format, 0 );
-        //optimizedSurface = SDL_ConvertSurface( loadedSurface, sheep->format, NULL );
-        if( optimizedSurface == NULL )
-        {
-            printf( "Unable to optimize image %s! SDL Error: %s\n", path.c_str(), SDL_GetError() );
-        }
-
-        //Get rid of old loaded surface
-        SDL_FreeSurface( loadedSurface );
-    }
-
-    return optimizedSurface;
-}
-
-int spaceX = 300;
-int spaceY = 200;
 
 int main( int argc, char* args[] )
 {
@@ -259,6 +153,11 @@ int main( int argc, char* args[] )
 
             //Event handler
             SDL_Event e;
+            SDL_Rect stretchRect;
+            stretchRect.x = 300;
+            stretchRect.y = 200;
+            stretchRect.w = 50;
+            stretchRect.h = 50;
 
             //While application is running
             while( !quit )
@@ -274,69 +173,42 @@ int main( int argc, char* args[] )
 
                     //else if(e.type == SDL_KEYDOWN)
                     //{ 
-                        if (e.key.keysym.sym == SDLK_w)
-                        {
-                            spaceY -= 10;
-                        }
-
-                        if (e.key.keysym.sym == SDLK_s)
-                        {
-                            spaceY += 10;
-                        }
-
-                        if (e.key.keysym.sym == SDLK_a)
-                        {
-                            spaceX -= 10;
-                        }
-
-                        if (e.key.keysym.sym == SDLK_d)
-                        {
-                            spaceX += 10;
-                        }
-                    //}
+                    if (e.key.keysym.sym == SDLK_w)
+                    {
+                        stretchRect.y -= 5;
+                    }
+                    
+                    if (e.key.keysym.sym == SDLK_s)
+                    {
+                        stretchRect.y += 5;
+                    }
+                    
+                    if (e.key.keysym.sym == SDLK_a)
+                    {
+                        stretchRect.x -= 5;
+                    }
+                    
+                    if (e.key.keysym.sym == SDLK_d)
+                    {
+                        stretchRect.x += 5;
+                    }
+                
+                
                 }
-
-                //Apply the image stretched
-                SDL_Rect stretchRect;
-                SDL_Rect background;
-                background.x = 0;
-                background.y = 0;
-                background.w = SCREEN_WIDTH;
-                background.h = SCREEN_HEIGHT;
-                stretchRect.x = spaceX;
-                stretchRect.y = spaceY;
-                stretchRect.w = 100;
-                stretchRect.h = 100;
-
-                SDL_BlitScaled( gStretchedSurface, NULL, gScreenSurface, &background );
+                
+                terr_generation();
+                terr_print();
                 SDL_BlitScaled( sheep, NULL, gScreenSurface, &stretchRect );
-            
-                //Update the surface
-                SDL_UpdateWindowSurface( gWindow );
->>>>>>> 3f06a127bb6bfcd5e180014fdc4517e5f53b17d4
+                
+                SDL_UpdateWindowSurface(gWindow);
+                SDL_Delay(20);
+                
             }
-            counter++;
-            terr_generation();
-            terr_print();
-            SDL_UpdateWindowSurface(gWindow);
-            std::cout << counter << std::endl;
-            SDL_Delay(20);
         }
+        
     }
-<<<<<<< HEAD
-    
-    
-    
-	//Free resources and close SDL
+//Free resources and close SDL
 	close();
     
 	return 0;
 }
-=======
-
-    //Free resources and close SDL
-    close();
-
-    return 0;
-}
->>>>>>> 3f06a127bb6bfcd5e180014fdc4517e5f53b17d4

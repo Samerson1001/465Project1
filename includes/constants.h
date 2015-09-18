@@ -7,15 +7,6 @@
 const int SCREEN_WIDTH = 640;
 const int SCREEN_HEIGHT = 480;
 
-// Asteroid X constant
-const int ast_x = 608;
-
-//Starts up SDL and creates window
-bool init();
-
-//Frees media and shuts down SDL
-void close();
-
 void terr_generation();
 void terr_print();
 
@@ -29,3 +20,21 @@ SDL_Renderer* gRenderer = NULL;
 SDL_Texture* gTexture = NULL;
 
 SDL_Surface* gScreenSurface= NULL;
+
+//Starts up SDL and creates window
+bool init();
+
+//Loads media
+bool loadMedia();
+
+//Frees media and shuts down SDL
+void close();
+
+//Loads individual image
+SDL_Surface* loadSurface( std::string path );
+    
+SDL_Surface* sheep = NULL;
+
+
+//Current displayed image
+SDL_Surface* gStretchedSurface = NULL;
