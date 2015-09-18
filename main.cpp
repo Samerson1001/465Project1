@@ -1,129 +1,127 @@
-/******************************************************************************
-// Class: Software Engineering
-******************************************************************************/
-/******************************************************************************
-// Lazy Foo web tutorials were used as a rough outline to help code the
-// functions. Nothing was directly copied, only used as visual reference to
-// help set up the initial program
-******************************************************************************/
+/*This source code copyrighted by Lazy Foo' Productions (2004-2015)
+and may not be redistributed without written permission.*/
+
+//Using SDL, standard IO, and strings
 #include <SDL.h>
 #include <stdio.h>
+#include <string>
+#include "constants.h"
+#include <SDL_image.h>
+#include "asteroid.h"
 
-const int SCREEN_WIDTH = 1280;
-const int SCREEN_HEIGHT = 1024;
-
-bool init();
-bool media();
-void close();
-
-// Game Screen Window
-SDL_Window* gWindow = NULL;
-// Surface of the Window
-SDL_Surface* gScreenSurface = NULL;
-//Image loaded onto screen
-SDL_Surface* gXOut = NULL;
+Asteroid asteroid[100];
 
 bool init()
 {
-    // Flag
+	//Initialization flag
 	bool success = true;
 
-	//Initialize
+	//Initialize SDL
 	if( SDL_Init( SDL_INIT_VIDEO ) < 0 )
 	{
+		printf( "SDL could not initialize! SDL Error: %s\n", SDL_GetError() );
 		success = false;
 	}
 	else
 	{
 		//Create window
-		gWindow = SDL_CreateWindow("Hello World", SDL_WINDOWPOS_UNDEFINED, SDL_WINDOWPOS_UNDEFINED, SCREEN_WIDTH, SCREEN_HEIGHT, SDL_WINDOW_SHOWN );
+		gWindow = SDL_CreateWindow( "SDL Tutorial", SDL_WINDOWPOS_UNDEFINED, SDL_WINDOWPOS_UNDEFINED, SCREEN_WIDTH, SCREEN_HEIGHT, SDL_WINDOW_SHOWN );
 		if( gWindow == NULL )
 		{
+			printf( "Window could not be created! SDL Error: %s\n", SDL_GetError() );
 			success = false;
 		}
 		else
 		{
 			//Get window surface
-			gScreenSurface = SDL_GetWindowSurface(gWindow);
+			gScreenSurface = SDL_GetWindowSurface( gWindow );
 		}
 	}
 
 	return success;
 }
 
-bool media()
-{
-    // Flag
-    bool success = true;
-
-    // Image
-    gXOut = SDL_LoadBMP("hello_world.bmp");
-    if (gXOut == NULL)
-    {
-        success = false;
-    }
-
-    return success;
-}
-
 void close()
 {
-	//Deallocate surface
-	SDL_FreeSurface(gXOut);
-	gXOut = NULL;
-
 	//Destroy window
-	SDL_DestroyWindow(gWindow);
+	SDL_DestroyWindow( gWindow );
 	gWindow = NULL;
 
-	//Quit SDL 
+	//Quit SDL subsystems
 	SDL_Quit();
 }
 
-int main(int argc, char* args[])
+void print(Asteroid & Asteroid)
 {
-    if(!init())
+    SDL_BlitScaled(Asteroid.asteroid, NULL,
+                   gScreenSurface, &Asteroid.ast);
+                
+}
+
+void terr_generation()
+{
+    for (int i = 0; i < 100; ++i)
     {
-        printf("Init failed\n");
-    }
-    else
-    {
-        if (!media())
+        if (rand() % 500 == 0)
         {
-              printf("Media failed\n");
+            asteroid[i].screen = true;
         }
-        else
+    }
+}
+
+void terr_print()
+{
+    for (int i = 0; i < 100; ++i)
+    {
+        if (asteroid[i].screen)
         {
-            // Loop flag
-            bool quit = false;
+            asteroid[i].left();
+            SDL_BlitSurface(asteroid[i].asteroid, NULL,
+                            gScreenSurface, &asteroid[i].ast);
+        }
+        
+    }
+}
 
-            // Event
-            SDL_Event e;
-
-            // Application x run
-            while (!quit)
+int main( int argc, char* args[] )
+{
+	//Start up SDL and create window
+	if( !init() )
+	{
+		printf( "Failed to initialize!\n" );
+	}
+	else
+	{	
+        //Main loop flag
+        bool quit = false;
+        //Event handler
+        SDL_Event e;
+        int counter = 0;
+        //While application is running
+        while( !quit )
+        {
+            //Handle events on queue
+            while( SDL_PollEvent( &e ) != 0 )
             {
-                // Event queue
-                while (SDL_PollEvent(&e) != 0)
+                //User requests quit
+                if( e.type == SDL_QUIT )
                 {
-                    // User quit
-                    if (e.type == SDL_QUIT)
-                    {
-                        quit = true;
-                    }
+                    quit = true;
                 }
-
-                // Paint image onto screen
-                SDL_BlitSurface(gXOut, NULL, gScreenSurface, NULL);
-
-                // Update the game screen
-                SDL_UpdateWindowSurface(gWindow);
             }
+            counter++;
+            terr_generation();
+            terr_print();
+            SDL_UpdateWindowSurface(gWindow);
+            std::cout << counter << std::endl;
+            SDL_Delay(20);
         }
     }
-
-    // Free memory and exit out of SDL
-    close();
-
-    return 0;
+    
+    
+    
+	//Free resources and close SDL
+	close();
+    
+	return 0;
 }
