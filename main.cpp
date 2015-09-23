@@ -154,14 +154,59 @@ int main( int argc, char* args[] )
             //Event handler
             SDL_Event e;
             SDL_Rect stretchRect;
+            SDL_Surface *back;
+            back = SDL_CreateRGBSurface(0, 640, 480, 32, 0, 0, 0, 0);
+            SDL_Rect background;
+            background.x = 0;
+            background.y = 0;
+            background.w = 640;
+            background.h = 480;
+            SDL_FillRect(back, NULL, SDL_MapRGB(back->format, 0, 0, 0));
+
             stretchRect.x = 300;
             stretchRect.y = 200;
             stretchRect.w = 50;
             stretchRect.h = 50;
 
+            int sheepSpeed = 3;
+
             //While application is running
             while( !quit )
             {
+                const Uint8 *state = SDL_GetKeyboardState(NULL);
+
+                if (state[SDL_SCANCODE_W])
+                {
+                    if (stretchRect.y <= 0);
+
+                    else
+                        stretchRect.y -= sheepSpeed;
+                }
+
+                if (state[SDL_SCANCODE_S])
+                {
+                    if (stretchRect.y >= 430);
+
+                    else
+                        stretchRect.y += sheepSpeed;
+                }
+                    
+                if (state[SDL_SCANCODE_A])
+                {
+                    if (stretchRect.x <= 0);
+
+                    else
+                        stretchRect.x -= sheepSpeed;
+                }
+                    
+                if (state[SDL_SCANCODE_D])
+                {
+                    if (stretchRect.x >= 590);
+
+                    else
+                        stretchRect.x += sheepSpeed;
+                }
+
                 //Handle events on queue
                 if( SDL_PollEvent( &e ) != 0 )
                 {
@@ -171,31 +216,19 @@ int main( int argc, char* args[] )
                         quit = true;
                     }
 
+                    //int SDL_EnablelKeyRepeat(0, SDL_DEFAULT_REPEAT_INTERVAL);
+
+
                     //else if(e.type == SDL_KEYDOWN)
                     //{ 
-                    if (e.key.keysym.sym == SDLK_w)
-                    {
-                        stretchRect.y -= 5;
-                    }
                     
-                    if (e.key.keysym.sym == SDLK_s)
-                    {
-                        stretchRect.y += 5;
-                    }
                     
-                    if (e.key.keysym.sym == SDLK_a)
-                    {
-                        stretchRect.x -= 5;
-                    }
-                    
-                    if (e.key.keysym.sym == SDLK_d)
-                    {
-                        stretchRect.x += 5;
-                    }
+
                 
                 
                 }
                 
+               SDL_BlitScaled(back, NULL, gScreenSurface, &background);
                 terr_generation();
                 terr_print();
                 SDL_BlitScaled( sheep, NULL, gScreenSurface, &stretchRect );
