@@ -59,7 +59,7 @@ bool loadMedia()
     bool success = true;
 
     //Load stretching surface
-    //gStretchedSurface = loadSurface( "images/tiger.bmp" );
+    gStretchedSurface = SDL_LoadBMP( "images/cloud.bmp" );
     sheep = SDL_LoadBMP("images/sheep.bmp");
 
     if( sheep == NULL )
@@ -154,6 +154,11 @@ int main( int argc, char* args[] )
             //Event handler
             SDL_Event e;
             SDL_Rect stretchRect;
+            SDL_Rect background;
+            background.x = 0;
+            background.y = 0;
+            background.w = 640;
+            background.h = 480;
             stretchRect.x = 300;
             stretchRect.y = 200;
             stretchRect.w = 50;
@@ -193,13 +198,13 @@ int main( int argc, char* args[] )
                         stretchRect.x += 5;
                     }
                 
-                
+                    //SDL_BlitScaled(gStretchedSurface, NULL, gScreenSurface, &background);
+                         
                 }
                 
                 terr_generation();
                 terr_print();
                 SDL_BlitScaled( sheep, NULL, gScreenSurface, &stretchRect );
-                
                 SDL_UpdateWindowSurface(gWindow);
                 SDL_Delay(20);
                 
