@@ -6,7 +6,7 @@ and may not be redistributed without written permission.*/
 #include <stdio.h>
 #include <string>
 #include "constants.h"
-#include <SDL_image.h>
+#include <SDL/SDL_image.h>
 #include "asteroid.h"
 
 Asteroid asteroid[100];
@@ -59,7 +59,7 @@ bool loadMedia()
     bool success = true;
 
     //Load stretching surface
-    //gStretchedSurface = loadSurface( "images/tiger.bmp" );
+    //gStretchedSurface = loadSurface( "images/sheep.bmp" );
     sheep = SDL_LoadBMP("images/sheep.bmp");
 
     if( sheep == NULL )
