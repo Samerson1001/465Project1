@@ -214,18 +214,7 @@ int main( int argc, char* args[] )
                     if( e.type == SDL_QUIT )
                     {
                         quit = true;
-                    }
-
-                    //int SDL_EnablelKeyRepeat(0, SDL_DEFAULT_REPEAT_INTERVAL);
-
-
-                    //else if(e.type == SDL_KEYDOWN)
-                    //{ 
-                    
-                    
-
-                
-                
+                    }                
                 }
                 
                SDL_BlitScaled(back, NULL, gScreenSurface, &background);
@@ -234,11 +223,9 @@ int main( int argc, char* args[] )
                 SDL_BlitScaled( sheep, NULL, gScreenSurface, &stretchRect );
                 
                 SDL_UpdateWindowSurface(gWindow);
-                SDL_Delay(20);
-                
+                SDL_Delay(20);                
             }
-        }
-        
+        }   
     }
 //Free resources and close SDL
 	close();
