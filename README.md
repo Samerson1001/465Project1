@@ -9,7 +9,8 @@ The objective of the game will be flying a spaceship in space while avoiding onc
 
 Build instructions:
 
-Download all the files.
+Download all of the files.
+(You will need SDL2_image and SDL2_ttf librariers to run this game.
 Once downloaded, pull up the file folder called SpaceAdventure
 
 In the terminal type :  make
