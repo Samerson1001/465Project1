@@ -19,9 +19,16 @@ In the terminal type :  make
 
 Game play instructions (to be further adjusted)
 
+Menu Instructions:
+Either select the menu item or use the following keys:
+  Enter - Play
+  ESC - Exit
+  I - Information/Game play 
+
 Spaceship basic controls 
   W - Move North
   A - Move West
   S - Move South
   D - Move East
+  ESC - Open Main Menu
 Diagonal keys not yet decided
