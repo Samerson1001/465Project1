@@ -1,5 +1,5 @@
 #include <SDL.h>
-#include <SDL_image.h>
+#include <SDL/SDL_image.h>
 #include <stdio.h>
 #include <string>
 
@@ -7,8 +7,11 @@
 const int SCREEN_WIDTH = 640;
 const int SCREEN_HEIGHT = 480;
 
+
 void terr_generation();
 void terr_print();
+bool overlap_check();
+void safe_zone(const int &);
 
 //The window we'll be rendering to
 SDL_Window* gWindow = NULL;

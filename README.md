@@ -9,7 +9,8 @@ The objective of the game will be flying a spaceship in space while avoiding onc
 
 Build instructions:
 
-Download all the files.
+Download all of the files.
+(You will need SDL2_image and SDL2_ttf librariers to run this game.
 Once downloaded, pull up the file folder called SpaceAdventure
 
 In the terminal type :  make
@@ -18,9 +19,16 @@ In the terminal type :  make
 
 Game play instructions (to be further adjusted)
 
+Menu Instructions:
+Either select the menu item or use the following keys:
+  Enter - Play
+  ESC - Exit
+  I - Information/Game play 
+
 Spaceship basic controls 
   W - Move North
   A - Move West
   S - Move South
   D - Move East
+  ESC - Open Main Menu
 Diagonal keys not yet decided
