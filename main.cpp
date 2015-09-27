@@ -16,12 +16,14 @@ void terr_generation()
 {
     for (int i = 0; i < 100; ++i)
     {
-        if (rand() % 500 == 0)
+        if (rand() % 250 == 0)
         {
             asteroid[i].screen = true;
+          
         }
     }
 }
+
 
 bool init()
 {
@@ -122,15 +124,36 @@ void terr_print()
 {
     for (int i = 0; i < 100; ++i)
     {
+        bool flag = true;
         if (asteroid[i].screen)
         {
-            asteroid[i].left();
-            SDL_BlitSurface(asteroid[i].asteroid, NULL,
-                            gScreenSurface, &asteroid[i].ast);
+            for (int l = 0; l < 100; ++l)
+            {
+                if (asteroid[l].screen)
+                {
+                    if (asteroid[i].overlap_check(asteroid[l]))
+                    {
+                        flag = false;
+                        asteroid[i].screen = false;
+                        asteroid[i].ast.x = 680;
+                        asteroid[i].ast.y = rand() % 480;
+                    }
+                }
+            }
+            if (flag == true)
+            {
+                asteroid[i].print();
+            }
+            
         }
-        
     }
 }
+
+void safe_zone(const int & safe)
+{
+    
+}
+
 
 int main( int argc, char* args[] )
 {
@@ -168,6 +191,47 @@ int main( int argc, char* args[] )
             stretchRect.w = 50;
             stretchRect.h = 50;
 
+            SDL_Rect zone1;
+            zone1.x = 600;
+            zone1.y = 0;
+            zone1.w = 60;
+            zone1.h = 60;
+            SDL_Rect zone2;
+            zone2.x = 600;
+            zone2.y = 60;
+            zone2.w = 60;
+            zone2.h = 60;
+            SDL_Rect zone3;
+            zone3.x = 600;
+            zone3.y = 120;
+            zone3.w = 60;
+            zone3.h = 60;
+            SDL_Rect zone4;
+            zone4.x = 600;
+            zone4.y = 180;
+            zone4.w = 60;
+            zone4.h = 60;
+            SDL_Rect zone5;
+            zone5.x = 600;
+            zone5.y = 240;
+            zone5.w = 60;
+            zone5.h = 60;
+            SDL_Rect zone6;
+            zone6.x = 600;
+            zone6.y = 300;
+            zone6.w = 60;
+            zone6.h = 60;
+            SDL_Rect zone7;
+            zone7.x = 600;
+            zone7.y = 360;
+            zone7.w = 60;
+            zone7.h = 60;
+            SDL_Rect zone8;
+            zone8.x = 600;
+            zone8.y = 420;
+            zone8.w = 60;
+            zone8.h = 60;
+            int safe = rand() % 8 + 1;
             int sheepSpeed = 3;
 
             //While application is running
@@ -228,7 +292,7 @@ int main( int argc, char* args[] )
                 
                 }
                 
-               SDL_BlitScaled(back, NULL, gScreenSurface, &background);
+                SDL_BlitScaled(back, NULL, gScreenSurface, &background);
                 terr_generation();
                 terr_print();
                 SDL_BlitScaled( sheep, NULL, gScreenSurface, &stretchRect );
