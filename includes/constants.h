@@ -11,7 +11,7 @@ const int SCREEN_HEIGHT = 480;
 void terr_generation();
 void terr_print();
 bool overlap_check();
-void safe_zone(const int &);
+void safe_zone(int &);
 
 //The window we'll be rendering to
 SDL_Window* gWindow = NULL;
