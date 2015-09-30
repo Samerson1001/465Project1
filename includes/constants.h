@@ -13,6 +13,8 @@ void terr_print();
 bool overlap_check();
 void safe_zone(int &);
 void fill_in(const int &);
+bool zone1_check();
+
 //The window we'll be rendering to
 SDL_Window* gWindow = NULL;
 
