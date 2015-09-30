@@ -22,6 +22,7 @@ SDL_Rect zone6;
 SDL_Rect zone7;
 SDL_Rect zone8;
 
+int safe = rand() % 8 + 1;
 LTimer timer;
 
 
@@ -309,6 +310,9 @@ void terr_print()
 
 void safe_zone(int & safe)
 {
+    // Goal of this function takes in the safe zone, then scans through both
+    // arrays and does hit detection, if true, it removes the asteroid
+    // off the screen.
     if (safe == 1)
     {
         int left1 = zone1.x;
@@ -900,6 +904,9 @@ void safe_zone(int & safe)
 
 void fill_in(const int & safe)
 {
+    // Function looks at safe zone, if it isn't the safe zone, it should
+    // put an asteroid inside the frame of the zone, so not zone 1 is any
+    // y value between 0 to 60. 
     if (safe != 1)
     {
         for (int i = 0; i < 100; ++i)
@@ -1094,7 +1101,6 @@ int main( int argc, char* args[] )
             //if(i == 1)
             //    quit == true;
             
-            int safe = rand() % 8 + 1;
             int sheepSpeed = 3;
 
             //While application is running
@@ -1159,8 +1165,8 @@ int main( int argc, char* args[] )
                 }
                 SDL_BlitScaled(back, NULL, gScreenSurface, &background);
                 terr_generation();
-                terr_print();
                 fill_in(safe);
+                terr_print();
                 safe_zone(safe);
                 
                 if (timer.getTicks() % 1000 > 980)
