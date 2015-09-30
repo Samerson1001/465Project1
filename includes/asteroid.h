@@ -12,7 +12,7 @@ class Asteroid
 {
 public:
     Asteroid()
-        : speed(2), screen(false)
+        : speed(3), screen(false)
     {
         asteroid = SDL_LoadBMP("includes/asteroid.bmp");
         ast.x = 680;
@@ -74,7 +74,7 @@ public:
         
         if ( bottom1 < top2 ) // Bottom 1 is above top 2 
             flag = false; // No collision
-    
+
 
     
         return flag;

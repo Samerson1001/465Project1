@@ -12,6 +12,7 @@ and may not be redistributed without written permission.*/
 #include "LTimer.h"
 
 Asteroid asteroid[100];
+Asteroid fill[100];
 SDL_Rect zone1;
 SDL_Rect zone2;
 SDL_Rect zone3;
@@ -21,6 +22,7 @@ SDL_Rect zone6;
 SDL_Rect zone7;
 SDL_Rect zone8;
 
+int safe = rand() % 8 + 1;
 LTimer timer;
 
 
@@ -250,7 +252,6 @@ void terr_print()
 {
     for (int i = 0; i < 100; ++i)
     {
-        bool flag = true;
         if (asteroid[i].screen)
         {
             for (int l = 0; l < 100; ++l)
@@ -259,24 +260,59 @@ void terr_print()
                 {
                     if (asteroid[i].overlap_check(asteroid[l]))
                     {
-                        flag = false;
                         asteroid[i].screen = false;
                         asteroid[i].ast.x = 680;
                         asteroid[i].ast.y = rand() % 480;
                     }
+                    
                 }
             }
-            if (flag == true)
+        }
+    }
+
+    // THIS IS WHERE THE OVERLAP CHECK HAPPENS FOR THE FILL IN FUNCTION
+    // PRETTY MUCH NEED TO FIGURE OUT HOW TO MODIFY THIS SO INSTEAD OF
+    // JUST TAKING IT OFF SCREEN(WHICH SCRAPS IT'S X/Y VALUES IN THE
+    // FILL IN FUNCTION. NEED TO FIGURE OUT WAY TO COMBINE BOTH SO
+    // IT GENERATES A CLEAN ASTEROID NO OVERLAP THEN JUST PRINTS
+    // **********************************************************
+    // THIS IS WHERE I NEED THE HELP WITH FILL IN FUNCTION
+    //***********************************************************
+    for (int i = 0; i < 100; ++i)
+    {
+        if (fill[i].screen)
+        {
+            for (int l = 0; l < 100; ++l)
             {
-                asteroid[i].print();
+                if (fill[i].overlap_check(asteroid[l]))
+                {
+                    fill[i].screen = false;
+                }
             }
-            
+        }
+    }
+     
+    
+    for (int i = 0; i < 100; ++i)
+    {
+        if (asteroid[i].screen)
+        {
+            asteroid[i].print();
+        }
+        if (fill[i].screen)
+        {
+            fill[i].print();
         }
     }
 }
 
+
+
 void safe_zone(int & safe)
 {
+    // Goal of this function takes in the safe zone, then scans through both
+    // arrays and does hit detection, if true, it removes the asteroid
+    // off the screen.
     if (safe == 1)
     {
         int left1 = zone1.x;
@@ -318,8 +354,38 @@ void safe_zone(int & safe)
                 asteroid[i].ast.y = rand() % 480;
             }
         }
+        for (int i = 0; i < 100; ++i)
+        {
+            bool flag = true;
+            if (fill[i].screen)
+            {
+                int left2 = fill[i].ast.x;
+                int right2 = fill[i].ast.x + fill[i].ast.w;
+                int top2 = fill[i].ast.y;
+                int bottom2 = fill[i].ast.y + fill[i].ast.h;
+                
+                // Check edges
+                if ( left1 > right2 )// Left 1 is right of right 2
+                    flag = false; // No collision
+                
+                if ( right1 < left2 ) // Right 1 is left of left 2
+                    flag = false; // No collision
+                
+                if ( top1 > bottom2 ) // Top 1 is below bottom 2
+                    flag = false; // No collision
+                
+                if ( bottom1 < top2 ) // Bottom 1 is above top 2 
+                    flag = false; // No collision
+
+                if (flag == true)
+                {
+                    fill[i].screen = false;
+                }
+            }
+        }
     
     }
+   
     if (safe == 2)
     {
         int left1 = zone2.x;
@@ -361,8 +427,38 @@ void safe_zone(int & safe)
                 asteroid[i].ast.y = rand() % 480;
             }
         }
+        for (int i = 0; i < 100; ++i)
+        {
+            bool flag = true;
+            if (fill[i].screen)
+            {
+                int left2 = fill[i].ast.x;
+                int right2 = fill[i].ast.x + fill[i].ast.w;
+                int top2 = fill[i].ast.y;
+                int bottom2 = fill[i].ast.y + fill[i].ast.h;
+                
+                // Check edges
+                if ( left1 > right2 )// Left 1 is right of right 2
+                    flag = false; // No collision
+                
+                if ( right1 < left2 ) // Right 1 is left of left 2
+                    flag = false; // No collision
+                
+                if ( top1 > bottom2 ) // Top 1 is below bottom 2
+                    flag = false; // No collision
+                
+                if ( bottom1 < top2 ) // Bottom 1 is above top 2 
+                    flag = false; // No collision
+                
+                if (flag == true)
+                {
+                    fill[i].screen = false;
+                }
+            }
+        }
     
     }
+    
     if (safe == 3)
     {
         int left1 = zone3.x;
@@ -404,8 +500,38 @@ void safe_zone(int & safe)
                 asteroid[i].ast.y = rand() % 480;
             }
         }
+        for (int i = 0; i < 100; ++i)
+        {
+            bool flag = true;
+            if (fill[i].screen)
+            {
+                int left2 = fill[i].ast.x;
+                int right2 = fill[i].ast.x + fill[i].ast.w;
+                int top2 = fill[i].ast.y;
+                int bottom2 = fill[i].ast.y + fill[i].ast.h;
+                
+                // Check edges
+                if ( left1 > right2 )// Left 1 is right of right 2
+                    flag = false; // No collision
+                
+                if ( right1 < left2 ) // Right 1 is left of left 2
+                    flag = false; // No collision
+                
+                if ( top1 > bottom2 ) // Top 1 is below bottom 2
+                    flag = false; // No collision
+                
+                if ( bottom1 < top2 ) // Bottom 1 is above top 2 
+                    flag = false; // No collision
+
+                if (flag == true)
+                {
+                    fill[i].screen = false;
+                }
+            }
+        }
     
     }
+   
     if (safe == 4)
     {
         int left1 = zone4.x;
@@ -447,8 +573,38 @@ void safe_zone(int & safe)
                 asteroid[i].ast.y = rand() % 480;
             }
         }
+        for (int i = 0; i < 100; ++i)
+        {
+            bool flag = true;
+            if (fill[i].screen)
+            {
+                int left2 = fill[i].ast.x;
+                int right2 = fill[i].ast.x + fill[i].ast.w;
+                int top2 = fill[i].ast.y;
+                int bottom2 = fill[i].ast.y + fill[i].ast.h;
+                
+                // Check edges
+                if ( left1 > right2 )// Left 1 is right of right 2
+                    flag = false; // No collision
+                
+                if ( right1 < left2 ) // Right 1 is left of left 2
+                    flag = false; // No collision
+                
+                if ( top1 > bottom2 ) // Top 1 is below bottom 2
+                    flag = false; // No collision
+                
+                if ( bottom1 < top2 ) // Bottom 1 is above top 2 
+                    flag = false; // No collision
+
+                if (flag == true)
+                {
+                    fill[i].screen = false;
+                }
+            }
+        }
     
     }
+   
     if (safe == 5)
     {
         int left1 = zone5.x;
@@ -490,8 +646,38 @@ void safe_zone(int & safe)
                 asteroid[i].ast.y = rand() % 480;
             }
         }
+        for (int i = 0; i < 100; ++i)
+        {
+            bool flag = true;
+            if (fill[i].screen)
+            {
+                int left2 = fill[i].ast.x;
+                int right2 = fill[i].ast.x + fill[i].ast.w;
+                int top2 = fill[i].ast.y;
+                int bottom2 = fill[i].ast.y + fill[i].ast.h;
+                
+                // Check edges
+                if ( left1 > right2 )// Left 1 is right of right 2
+                    flag = false; // No collision
+                
+                if ( right1 < left2 ) // Right 1 is left of left 2
+                    flag = false; // No collision
+                
+                if ( top1 > bottom2 ) // Top 1 is below bottom 2
+                    flag = false; // No collision
+                
+                if ( bottom1 < top2 ) // Bottom 1 is above top 2 
+                    flag = false; // No collision
+
+                if (flag == true)
+                {
+                    fill[i].screen = false;
+                }
+            }
+        }
     
     }
+   
     if (safe == 6)
     {
         int left1 = zone6.x;
@@ -533,8 +719,38 @@ void safe_zone(int & safe)
                 asteroid[i].ast.y = rand() % 480;
             }
         }
+        for (int i = 0; i < 100; ++i)
+        {
+            bool flag = true;
+            if (fill[i].screen)
+            {
+                int left2 = fill[i].ast.x;
+                int right2 = fill[i].ast.x + fill[i].ast.w;
+                int top2 = fill[i].ast.y;
+                int bottom2 = fill[i].ast.y + fill[i].ast.h;
+                
+                // Check edges
+                if ( left1 > right2 )// Left 1 is right of right 2
+                    flag = false; // No collision
+                
+                if ( right1 < left2 ) // Right 1 is left of left 2
+                    flag = false; // No collision
+                
+                if ( top1 > bottom2 ) // Top 1 is below bottom 2
+                    flag = false; // No collision
+                
+                if ( bottom1 < top2 ) // Bottom 1 is above top 2 
+                    flag = false; // No collision
+
+                if (flag == true)
+                {
+                    fill[i].screen = false;
+                }
+            }
+        }
     
     }
+    
     if (safe == 7)
     {
         int left1 = zone7.x;
@@ -576,8 +792,38 @@ void safe_zone(int & safe)
                 asteroid[i].ast.y = rand() % 480;
             }
         }
+        for (int i = 0; i < 100; ++i)
+        {
+            bool flag = true;
+            if (fill[i].screen)
+            {
+                int left2 = fill[i].ast.x;
+                int right2 = fill[i].ast.x + fill[i].ast.w;
+                int top2 = fill[i].ast.y;
+                int bottom2 = fill[i].ast.y + fill[i].ast.h;
+                
+                // Check edges
+                if ( left1 > right2 )// Left 1 is right of right 2
+                    flag = false; // No collision
+                
+                if ( right1 < left2 ) // Right 1 is left of left 2
+                    flag = false; // No collision
+                
+                if ( top1 > bottom2 ) // Top 1 is below bottom 2
+                    flag = false; // No collision
+                
+                if ( bottom1 < top2 ) // Bottom 1 is above top 2 
+                    flag = false; // No collision
+
+                if (flag == true)
+                {
+                    fill[i].screen = false;
+                }
+            }
+        }
     
     }
+    
     if (safe == 8)
     {
         int left1 = zone8.x;
@@ -619,9 +865,160 @@ void safe_zone(int & safe)
                 asteroid[i].ast.y = rand() % 480;
             }
         }
+        for (int i = 0; i < 100; ++i)
+        {
+            bool flag = true;
+            if (fill[i].screen)
+            {
+                int left2 = fill[i].ast.x;
+                int right2 = fill[i].ast.x + fill[i].ast.w;
+                int top2 = fill[i].ast.y;
+                int bottom2 = fill[i].ast.y + fill[i].ast.h;
+                
+                // Check edges
+                if ( left1 > right2 )// Left 1 is right of right 2
+                    flag = false; // No collision
+                
+                if ( right1 < left2 ) // Right 1 is left of left 2
+                    flag = false; // No collision
+                
+                if ( top1 > bottom2 ) // Top 1 is below bottom 2
+                    flag = false; // No collision
+                
+                if ( bottom1 < top2 ) // Bottom 1 is above top 2 
+                    flag = false; // No collision
+                
+                if (flag == true)
+                {
+                    fill[i].screen = false;
+                }
+            }
+        }
     
     }
     
+}
+
+// MIGHT NEED TO REWORK LOGIC IN HERE IN ORDER FOR PRINTING OF FILL IN
+// TO BE MORE EFFECTIVE INSTEAD OF PRINT FUNCTION
+
+void fill_in(const int & safe)
+{
+    // Function looks at safe zone, if it isn't the safe zone, it should
+    // put an asteroid inside the frame of the zone, so not zone 1 is any
+    // y value between 0 to 60. 
+    if (safe != 1)
+    {
+        for (int i = 0; i < 100; ++i)
+        {
+            if (fill[i].screen == false)
+            {
+                fill[i].screen = true;
+                fill[i].ast.x = 680;
+                fill[i].ast.y = rand() % 60;
+                
+                break;
+            }
+        }
+    }
+    if (safe != 2)
+    {
+        for (int i = 0; i < 100; ++i)
+        {
+            if (fill[i].screen == false)
+            {
+                fill[i].screen = true;
+                fill[i].ast.x = 680;
+                fill[i].ast.y = rand() % 60 + 60;
+                
+                break;
+            }
+        }
+    }
+    if (safe != 3)
+    {
+        for (int i = 0; i < 100; ++i)
+        {
+            if (fill[i].screen == false)
+            {
+                fill[i].screen = true;
+                fill[i].ast.x = 680;
+                fill[i].ast.y = rand() % 60 + 120;
+                
+                break;
+            }
+        }
+    }
+    if (safe != 4)
+    {
+        for (int i = 0; i < 100; ++i)
+        {
+            if (fill[i].screen == false)
+            {
+                fill[i].screen = true;
+                fill[i].ast.x = 680;
+                fill[i].ast.y = rand() % 60 + 180;
+    
+                break;
+            }
+        }
+    }
+    if (safe != 5)
+    {
+        for (int i = 0; i < 100; ++i)
+        {
+            if (fill[i].screen == false)
+            {
+                fill[i].screen = true;
+                fill[i].ast.x = 680;
+                fill[i].ast.y = rand() % 60 + 240;
+                
+                break;
+            }
+        }
+    }
+    if (safe != 6)
+    {
+        for (int i = 0; i < 100; ++i)
+        {
+            if (fill[i].screen == false)
+            {
+                fill[i].screen = true;
+                fill[i].ast.x = 680;
+                fill[i].ast.y = rand() % 60 + 300;
+                
+                break;
+            }
+        }   
+    }
+    if(safe != 7)
+    {
+        for (int i = 0; i < 100; ++i)
+        {
+            if (fill[i].screen == false)
+            {
+                fill[i].screen = true;
+                fill[i].ast.x = 680;
+                fill[i].ast.y = rand() % 60 + 360;
+                
+                break;
+            }
+        }
+    }
+    if (safe != 8)
+    {
+        for (int i = 0; i < 100; ++i)
+        {
+            if (fill[i].screen == false)
+            {
+                fill[i].screen = true;
+                fill[i].ast.x = 680;
+                fill[i].ast.y = rand() % 60 + 420;
+                
+                break;
+            }
+        }
+    }
 }
 
 void zone()
@@ -693,18 +1090,17 @@ int main( int argc, char* args[] )
 
             stretchRect.x = 300;
             stretchRect.y = 200;
-            stretchRect.w = 50;
-            stretchRect.h = 50;
+            stretchRect.w = 25;
+            stretchRect.h = 25;
             zone();
 
             TTF_Font *font;
             TTF_Init();
             font = TTF_OpenFont("includes/game_over.ttf",30);
-            //int i = menu(gScreenSurface,font);
-            //if(i == 1)
-            //    quit == true;
+            int i = menu(gScreenSurface,font);
+            if(i == 1)
+               quit == true;
             
-            int safe = rand() % 8 + 1;
             int sheepSpeed = 3;
 
             //While application is running
@@ -758,30 +1154,40 @@ int main( int argc, char* args[] )
                 }
                 SDL_BlitScaled(back, NULL, gScreenSurface, &background);
                 terr_generation();
-                
-                safe_zone(safe);
+                fill_in(safe);
                 terr_print();
-                if (timer.getTicks() % 1000 > 975)
+                safe_zone(safe);
+                
+                if (timer.getTicks() % 1000 > 980)
                 {
-                    int random = rand() % 2;
-
-                    switch (random)
+                    int random = rand() % 10;
+                  
+                    switch (random % 2)
                     {
                         case 0 :
-                            if (safe > 0)
+                            if (safe == 1)
+                            {
+                                safe += 1;
+                            }
+                            else
                             {
                                 safe -= 1;
                             }
                             break;
                         case 1:
-                            if (safe < 8)
+                            if (safe == 8)
+                            {
+                                safe -= 1;
+                            }
+                            else 
                             {
                                 safe += 1;
                             }
+                            break;
                     }
                 }
-                
-                SDL_BlitScaled( sheep, NULL, gScreenSurface, &stretchRect );
+               
+                SDL_BlitScaled(sheep, NULL, gScreenSurface, &stretchRect);
                 
                 SDL_UpdateWindowSurface(gWindow);
                 SDL_Delay(20);                
