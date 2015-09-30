@@ -268,6 +268,15 @@ void terr_print()
             }
         }
     }
+
+    // THIS IS WHERE THE OVERLAP CHECK HAPPENS FOR THE FILL IN FUNCTION
+    // PRETTY MUCH NEED TO FIGURE OUT HOW TO MODIFY THIS SO INSTEAD OF
+    // JUST TAKING IT OFF SCREEN(WHICH SCRAPS IT'S X/Y VALUES IN THE
+    // FILL IN FUNCTION. NEED TO FIGURE OUT WAY TO COMBINE BOTH SO
+    // IT GENERATES A CLEAN ASTEROID NO OVERLAP THEN JUST PRINTS
+    // **********************************************************
+    // THIS IS WHERE I NEED THE HELP WITH FILL IN FUNCTION
+    //***********************************************************
     for (int i = 0; i < 100; ++i)
     {
         if (fill[i].screen)
@@ -885,6 +894,9 @@ void safe_zone(int & safe)
     }
     
 }
+
+// MIGHT NEED TO REWORK LOGIC IN HERE IN ORDER FOR PRINTING OF FILL IN
+// TO BE MORE EFFECTIVE INSTEAD OF PRINT FUNCTION
 
 void fill_in(const int & safe)
 {
