@@ -263,8 +263,7 @@ void terr_print()
                         asteroid[i].screen = false;
                         asteroid[i].ast.x = 680;
                         asteroid[i].ast.y = rand() % 480;
-                    }
-                    
+                    } 
                 }
             }
         }
@@ -278,23 +277,48 @@ void terr_print()
     // **********************************************************
     // THIS IS WHERE I NEED THE HELP WITH FILL IN FUNCTION
     //***********************************************************
+      if (zone1_check() == false)
+      {
+          for (int l = 0; l < 100; ++l)
+          {
+              if (fill[l].screen == false)
+              {
+                  fill[l].screen = true;
+                  fill[l].ast.x = 640;
+                  fill[l].ast.y = rand() % 60;
+                  break;
+              }
+              
+          }
+      }
     for (int i = 0; i < 100; ++i)
     {
         if (fill[i].screen)
         {
             for (int l = 0; l < 100; ++l)
             {
-                if (fill[i].overlap_check(asteroid[l]))
+                if (asteroid[l].screen)
                 {
-                    fill[i].screen = false;
+                    if (fill[i].overlap_check(asteroid[l]))
+                    {
+                        fill[i].screen = false;
+                    }
+                }
+                if (fill[l].screen)
+                {
+                    if (fill[i].overlap_check(fill[l]))
+                    {
+                        fill[i].screen = false;
+                    }
                 }
             }
         }
     }
-     
+
     
     for (int i = 0; i < 100; ++i)
     {
+       
         if (asteroid[i].screen)
         {
             asteroid[i].print();
@@ -899,6 +923,44 @@ void safe_zone(int & safe)
     
 }
 
+bool zone1_check()
+{
+    int left2 = zone1.x;
+    int right2 = zone1.x + zone1.w;
+    int top2 = zone1.y;
+    int bottom2 = zone1.y + zone2.h;
+    bool check = false;
+    
+    // Find edges of rect2
+    for (int i = 0; i < 100; ++i)
+    {
+        bool flag = true;
+        
+        int left1 = asteroid[i].ast.x;
+        int right1 = asteroid[i].ast.x + asteroid[i].ast.w;
+        int top1 = asteroid[i].ast.y;
+        int bottom1 = asteroid[i].ast.y + asteroid[i].ast.h;
+        // Check edges
+        if ( left1 > right2 )// Left 1 is right of right 2
+            flag = false; // No collision
+        
+        if ( right1 < left2 ) // Right 1 is left of left 2
+            flag = false; // No collision
+        
+        if ( top1 > bottom2 ) // Top 1 is below bottom 2
+            flag = false; // No collision
+        
+        if ( bottom1 < top2 ) // Bottom 1 is above top 2 
+            flag = false; // No collision
+        if (flag == true)
+        {
+            check = true;
+            return check;
+        }
+    }
+    return check;
+}
+
 // MIGHT NEED TO REWORK LOGIC IN HERE IN ORDER FOR PRINTING OF FILL IN
 // TO BE MORE EFFECTIVE INSTEAD OF PRINT FUNCTION
 
@@ -1157,8 +1219,10 @@ int main( int argc, char* args[] )
                 fill_in(safe);
                 terr_print();
                 safe_zone(safe);
+                std::cout << zone1_check() << std::endl;
+                std::cout << safe << std::endl;
                 
-                if (timer.getTicks() % 1000 > 980)
+                if (timer.getTicks() % 750 > 735)
                 {
                     int random = rand() % 10;
                   
