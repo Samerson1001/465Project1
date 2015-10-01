@@ -1119,6 +1119,76 @@ void zone()
      zone8.h = 60;
 }
 
+bool collision_check(SDL_Rect & rect)
+{
+    int left2 = rect.x;
+    int right2 = rect.x + rect.w;
+    int top2 = rect.y;
+    int bottom2 = rect.y + rect.h;
+    bool check = false;
+    
+    // Find edges of rect2
+    for (int i = 0; i < 100; ++i)
+    {
+        if (asteroid[i].screen)
+        {
+            bool flag = true;
+            
+            int left1 = asteroid[i].ast.x - 2;
+            int right1 = asteroid[i].ast.x + asteroid[i].ast.w - 2;
+            int top1 = asteroid[i].ast.y - 2;
+            int bottom1 = asteroid[i].ast.y + asteroid[i].ast.h - 2;
+            // Check edges
+            if ( left1 > right2 )// Left 1 is right of right 2
+                flag = false; // No collision
+            
+            if ( right1 < left2 ) // Right 1 is left of left 2
+                flag = false; // No collision
+            
+            if ( top1 > bottom2 ) // Top 1 is below bottom 2
+                flag = false; // No collision
+            
+            if ( bottom1 < top2 ) // Bottom 1 is above top 2 
+                flag = false; // No collision
+            if (flag == true)
+            {
+                check = true;
+                return check;
+            }
+        }
+    }
+    for (int i = 0; i < 100; ++i)
+    {
+        if (fill[i].screen)
+        {
+            bool flag = true;
+            
+            int left1 = fill[i].ast.x - 2;
+            int right1 = fill[i].ast.x + fill[i].ast.w - 2;
+            int top1 = fill[i].ast.y - 2;
+            int bottom1 = fill[i].ast.y + fill[i].ast.h - 2;
+            // Check edges
+            if ( left1 > right2 )// Left 1 is right of right 2
+                flag = false; // No collision
+            
+            if ( right1 < left2 ) // Right 1 is left of left 2
+                flag = false; // No collision
+            
+            if ( top1 > bottom2 ) // Top 1 is below bottom 2
+                flag = false; // No collision
+            
+            if ( bottom1 < top2 ) // Bottom 1 is above top 2 
+                flag = false; // No collision
+            if (flag == true)
+            {
+                check = true;
+                return check;
+            }
+        }
+    }
+    return check;
+}
+
 int main( int argc, char* args[] )
 {
     //Start up SDL and create window
@@ -1164,6 +1234,7 @@ int main( int argc, char* args[] )
             //    quit == true;
             
             int sheepSpeed = 3;
+            bool sheep_screen = true;
 
             //While application is running
             while( !quit )
@@ -1219,9 +1290,6 @@ int main( int argc, char* args[] )
                 fill_in(safe);
                 terr_print();
                 safe_zone(safe);
-                std::cout << zone1_check() << std::endl;
-                std::cout << safe << std::endl;
-                
                 if (timer.getTicks() % 750 > 500)
                 {
                     int random = rand() % 10;
@@ -1250,8 +1318,15 @@ int main( int argc, char* args[] )
                             break;
                     }
                 }
-               
-                SDL_BlitScaled(sheep, NULL, gScreenSurface, &stretchRect);
+                if (collision_check(stretchRect)) 
+                {
+                    sheep_screen = false;
+                }
+
+                if (sheep_screen)
+                {
+                    SDL_BlitScaled(sheep, NULL, gScreenSurface, &stretchRect);
+                }
                 
                 SDL_UpdateWindowSurface(gWindow);
                 SDL_Delay(20);                
