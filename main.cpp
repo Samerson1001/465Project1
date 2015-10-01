@@ -1159,9 +1159,9 @@ int main( int argc, char* args[] )
             TTF_Font *font;
             TTF_Init();
             font = TTF_OpenFont("includes/game_over.ttf",30);
-            int i = menu(gScreenSurface,font);
-            if(i == 1)
-               quit == true;
+            // int i = menu(gScreenSurface,font);
+            // if(i == 1)
+            //    quit == true;
             
             int sheepSpeed = 3;
 
@@ -1222,7 +1222,7 @@ int main( int argc, char* args[] )
                 std::cout << zone1_check() << std::endl;
                 std::cout << safe << std::endl;
                 
-                if (timer.getTicks() % 750 > 735)
+                if (timer.getTicks() % 750 > 500)
                 {
                     int random = rand() % 10;
                   
