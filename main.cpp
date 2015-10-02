@@ -1304,7 +1304,7 @@ int main( int argc, char* args[] )
                 }
                 if (collision_check(SpaceSheep)) 
                 {
-                    //sheep_screen = false;
+                    sheep_screen = false;
                 }
 
                 if (sheep_screen)
