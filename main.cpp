@@ -1142,14 +1142,50 @@ int main( int argc, char* args[] )
             //Event handler
             SDL_Event e;
             SDL_Rect stretchRect;
-            SDL_Surface *back;     
+            SDL_Rect border1;
+            SDL_Rect border2;
+            SDL_Rect border3;
+            SDL_Rect border4;
+            SDL_Surface *back;
+            SDL_Surface *bor1;
+            SDL_Surface *bor2;
+            SDL_Surface *bor3;
+            SDL_Surface *bor4;     
             back = SDL_CreateRGBSurface(0, 640, 480, 32, 0, 0, 0, 0);
+            bor1 = SDL_CreateRGBSurface(0, 640, 480, 32, 0, 0, 0, 0);
+            bor2 = SDL_CreateRGBSurface(0, 640, 480, 32, 0, 0, 0, 0);
+            bor3 = SDL_CreateRGBSurface(0, 640, 480, 32, 0, 0, 0, 0);
+            bor4 = SDL_CreateRGBSurface(0, 640, 480, 32, 0, 0, 0, 0);
             SDL_Rect background;
+            border1.x = 0;
+            border1.y = 0;
+            border1.w = 32;
+            border1.h = 480;
+
+            border2.x = 608;
+            border2.y = 0;
+            border2.w = 32;
+            border2.h = 480;
+            
+            border3.x = 0;
+            border3.y = 0;
+            border3.w = 640;
+            border3.h = 32;
+            
+            border4.x = 0;
+            border4.y = 448;
+            border4.w = 640;
+            border4.h = 32;
+
             background.x = 0;
             background.y = 0;
             background.w = 640;
             background.h = 480;
             SDL_FillRect(back, NULL, SDL_MapRGB(back->format, 0, 0, 0));
+            SDL_FillRect(bor1, NULL, SDL_MapRGB(bor1->format, 255, 0, 0));
+            SDL_FillRect(bor2, NULL, SDL_MapRGB(bor2->format, 255, 0, 0));
+            SDL_FillRect(bor3, NULL, SDL_MapRGB(bor3->format, 255, 0, 0));
+            SDL_FillRect(bor4, NULL, SDL_MapRGB(bor4->format, 255, 0, 0));
 
             stretchRect.x = 300;
             stretchRect.y = 200;
@@ -1160,9 +1196,9 @@ int main( int argc, char* args[] )
             TTF_Font *font;
             TTF_Init();
             font = TTF_OpenFont("includes/game_over.ttf",60);
-            int i = menu(gScreenSurface,font);
-            if(i == 1)
-                return 0;
+            // int i = menu(gScreenSurface,font);
+            // if(i == 1)
+            //     return 0;
             
             int sheepSpeed = 3;
             bool sheep_screen = true;
@@ -1220,7 +1256,11 @@ int main( int argc, char* args[] )
                 terr_generation();
                 fill_in(safe);
                 terr_print();
-                
+                SDL_BlitScaled(bor1, NULL, gScreenSurface, &border1);
+                SDL_BlitScaled(bor2, NULL, gScreenSurface, &border2);
+                SDL_BlitScaled(bor3, NULL, gScreenSurface, &border3);
+                SDL_BlitScaled(bor4, NULL, gScreenSurface, &border4);
+
                 safe_zone(safe);
                 if (timer.getTicks() % 750 > 500)
                 {
