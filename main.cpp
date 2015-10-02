@@ -188,8 +188,6 @@ bool loadMedia()
     //Loading success flag
     bool success = true;
 
-    //Load stretching surface
-    //gStretchedSurface = loadSurface( "images/sheep.bmp" );
     sheep = SDL_LoadBMP("images/sheep.bmp");
 
     if( sheep == NULL )
@@ -268,29 +266,6 @@ void terr_print()
             }
         }
     }
-
-    // THIS IS WHERE THE OVERLAP CHECK HAPPENS FOR THE FILL IN FUNCTION
-    // PRETTY MUCH NEED TO FIGURE OUT HOW TO MODIFY THIS SO INSTEAD OF
-    // JUST TAKING IT OFF SCREEN(WHICH SCRAPS IT'S X/Y VALUES IN THE
-    // FILL IN FUNCTION. NEED TO FIGURE OUT WAY TO COMBINE BOTH SO
-    // IT GENERATES A CLEAN ASTEROID NO OVERLAP THEN JUST PRINTS
-    // **********************************************************
-    // THIS IS WHERE I NEED THE HELP WITH FILL IN FUNCTION
-    //***********************************************************
-      if (zone1_check() == false)
-      {
-          for (int l = 0; l < 100; ++l)
-          {
-              if (fill[l].screen == false)
-              {
-                  fill[l].screen = true;
-                  fill[l].ast.x = 640;
-                  fill[l].ast.y = rand() % 60;
-                  break;
-              }
-              
-          }
-      }
     for (int i = 0; i < 100; ++i)
     {
         if (fill[i].screen)
@@ -334,9 +309,6 @@ void terr_print()
 
 void safe_zone(int & safe)
 {
-    // Goal of this function takes in the safe zone, then scans through both
-    // arrays and does hit detection, if true, it removes the asteroid
-    // off the screen.
     if (safe == 1)
     {
         int left1 = zone1.x;
@@ -899,7 +871,7 @@ void safe_zone(int & safe)
                 int top2 = fill[i].ast.y;
                 int bottom2 = fill[i].ast.y + fill[i].ast.h;
                 
-                // Check edges
+               // Check edges
                 if ( left1 > right2 )// Left 1 is right of right 2
                     flag = false; // No collision
                 
@@ -923,46 +895,6 @@ void safe_zone(int & safe)
     
 }
 
-bool zone1_check()
-{
-    int left2 = zone1.x;
-    int right2 = zone1.x + zone1.w;
-    int top2 = zone1.y;
-    int bottom2 = zone1.y + zone2.h;
-    bool check = false;
-    
-    // Find edges of rect2
-    for (int i = 0; i < 100; ++i)
-    {
-        bool flag = true;
-        
-        int left1 = asteroid[i].ast.x;
-        int right1 = asteroid[i].ast.x + asteroid[i].ast.w;
-        int top1 = asteroid[i].ast.y;
-        int bottom1 = asteroid[i].ast.y + asteroid[i].ast.h;
-        // Check edges
-        if ( left1 > right2 )// Left 1 is right of right 2
-            flag = false; // No collision
-        
-        if ( right1 < left2 ) // Right 1 is left of left 2
-            flag = false; // No collision
-        
-        if ( top1 > bottom2 ) // Top 1 is below bottom 2
-            flag = false; // No collision
-        
-        if ( bottom1 < top2 ) // Bottom 1 is above top 2 
-            flag = false; // No collision
-        if (flag == true)
-        {
-            check = true;
-            return check;
-        }
-    }
-    return check;
-}
-
-// MIGHT NEED TO REWORK LOGIC IN HERE IN ORDER FOR PRINTING OF FILL IN
-// TO BE MORE EFFECTIVE INSTEAD OF PRINT FUNCTION
 
 void fill_in(const int & safe)
 {
@@ -1085,35 +1017,35 @@ void fill_in(const int & safe)
 
 void zone()
 {
-     zone1.x = 600;
+     zone1.x = 640;
      zone1.y = 0;
      zone1.w = 60;
      zone1.h = 60;
-     zone2.x = 600;
+     zone2.x = 640;
      zone2.y = 60;
      zone2.w = 60;
      zone2.h = 60;
-     zone3.x = 600;
+     zone3.x = 640;
      zone3.y = 120;
      zone3.w = 60;
      zone3.h = 60;
-     zone4.x = 600;
+     zone4.x = 640;
      zone4.y = 180;
      zone4.w = 60;
      zone4.h = 60;
-     zone5.x = 600;
+     zone5.x = 640;
      zone5.y = 240;
      zone5.w = 60;
      zone5.h = 60;
-     zone6.x = 600;
+     zone6.x = 640;
      zone6.y = 300;
      zone6.w = 60;
      zone6.h = 60;
-     zone7.x = 600;
+     zone7.x = 640;
      zone7.y = 360;
      zone7.w = 60;
      zone7.h = 60;
-     zone8.x = 600;
+     zone8.x = 640;
      zone8.y = 420;
      zone8.w = 60;
      zone8.h = 60;
@@ -1207,11 +1139,10 @@ int main( int argc, char* args[] )
         {   
             //Main loop flag
             bool quit = false;
-
             //Event handler
             SDL_Event e;
             SDL_Rect stretchRect;
-            SDL_Surface *back;
+            SDL_Surface *back;     
             back = SDL_CreateRGBSurface(0, 640, 480, 32, 0, 0, 0, 0);
             SDL_Rect background;
             background.x = 0;
@@ -1228,10 +1159,10 @@ int main( int argc, char* args[] )
 
             TTF_Font *font;
             TTF_Init();
-            font = TTF_OpenFont("includes/game_over.ttf",30);
-            // int i = menu(gScreenSurface,font);
-            // if(i == 1)
-            //    quit == true;
+            font = TTF_OpenFont("includes/game_over.ttf",60);
+            int i = menu(gScreenSurface,font);
+            if(i == 1)
+                return 0;
             
             int sheepSpeed = 3;
             bool sheep_screen = true;
@@ -1289,6 +1220,7 @@ int main( int argc, char* args[] )
                 terr_generation();
                 fill_in(safe);
                 terr_print();
+                
                 safe_zone(safe);
                 if (timer.getTicks() % 750 > 500)
                 {
