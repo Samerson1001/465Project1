@@ -1210,7 +1210,8 @@ int main( int argc, char* args[] )
             // if(i == 1)
             //     return 0;
             
-            int sheepSpeed = 3;         //sheep speed, duh
+            double sheepSpeedX = 3;         //sheep speed, duh
+            double sheepSpeedY = 3.5; 
             bool sheep_screen = true;   //is sheep alive
 
             //While application is running
@@ -1223,7 +1224,7 @@ int main( int argc, char* args[] )
                     if (SpaceSheep.y <= 32);    //if hitting the edge, don't move
 
                     else
-                        SpaceSheep.y -= sheepSpeed; // else move
+                        SpaceSheep.y -= sheepSpeedY; // else move
                 }
 
                 if (state[SDL_SCANCODE_S])          //down
@@ -1231,7 +1232,7 @@ int main( int argc, char* args[] )
                     if (SpaceSheep.y >= 422);
 
                     else
-                        SpaceSheep.y += sheepSpeed;
+                        SpaceSheep.y += sheepSpeedY;
                 }
                     
                 if (state[SDL_SCANCODE_A])          //left
@@ -1239,7 +1240,7 @@ int main( int argc, char* args[] )
                     if (SpaceSheep.x <= 32);
 
                     else
-                        SpaceSheep.x -= sheepSpeed;
+                        SpaceSheep.x -= sheepSpeedX;
                 }
                     
                 if (state[SDL_SCANCODE_D])          //right
@@ -1247,7 +1248,7 @@ int main( int argc, char* args[] )
                     if (SpaceSheep.x >= 583);
 
                     else
-                        SpaceSheep.x += sheepSpeed;
+                        SpaceSheep.x += sheepSpeedX;
                 }
 
                 //Handle events on queue
