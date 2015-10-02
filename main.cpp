@@ -1206,9 +1206,9 @@ int main( int argc, char* args[] )
             TTF_Font *font;
             TTF_Init();
             font = TTF_OpenFont("includes/game_over.ttf",60);
-            // int i = menu(gScreenSurface,font);
-            // if(i == 1)
-            //     return 0;
+            int i = menu(gScreenSurface,font);
+            if(i == 1)
+                return 0;
             
             double sheepSpeedX = 3;         //sheep speed, duh
             double sheepSpeedY = 3.5; 
@@ -1221,7 +1221,7 @@ int main( int argc, char* args[] )
                 const Uint8 *state = SDL_GetKeyboardState(NULL);
                 if (state[SDL_SCANCODE_W])          //up
                 {
-                    if (SpaceSheep.y <= 32);    //if hitting the edge, don't move
+                    if (SpaceSheep.y <= 35);    //if hitting the edge, don't move
 
                     else
                         SpaceSheep.y -= sheepSpeedY; // else move
@@ -1237,7 +1237,7 @@ int main( int argc, char* args[] )
                     
                 if (state[SDL_SCANCODE_A])          //left
                 {
-                    if (SpaceSheep.x <= 32);
+                    if (SpaceSheep.x <= 33);
 
                     else
                         SpaceSheep.x -= sheepSpeedX;
@@ -1245,7 +1245,7 @@ int main( int argc, char* args[] )
                     
                 if (state[SDL_SCANCODE_D])          //right
                 {
-                    if (SpaceSheep.x >= 583);
+                    if (SpaceSheep.x >= 580);
 
                     else
                         SpaceSheep.x += sheepSpeedX;
@@ -1304,7 +1304,7 @@ int main( int argc, char* args[] )
                 }
                 if (collision_check(SpaceSheep)) 
                 {
-                    sheep_screen = false;
+                    //sheep_screen = false;
                 }
 
                 if (sheep_screen)

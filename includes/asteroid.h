@@ -12,7 +12,7 @@ class Asteroid
 {
 public:
     Asteroid()
-        : speed(4), screen(false)
+        : speed(3.5), screen(false)
     {
         asteroid = SDL_LoadBMP("includes/asteroid.bmp");
         ast.x = 680;
