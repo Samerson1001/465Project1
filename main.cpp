@@ -1209,7 +1209,7 @@ int main( int argc, char* args[] )
                 const Uint8 *state = SDL_GetKeyboardState(NULL);
                 if (state[SDL_SCANCODE_W])
                 {
-                    if (stretchRect.y <= 0);
+                    if (stretchRect.y <= 32);
 
                     else
                         stretchRect.y -= sheepSpeed;
@@ -1217,7 +1217,7 @@ int main( int argc, char* args[] )
 
                 if (state[SDL_SCANCODE_S])
                 {
-                    if (stretchRect.y >= 430);
+                    if (stretchRect.y >= 422);
 
                     else
                         stretchRect.y += sheepSpeed;
@@ -1225,7 +1225,7 @@ int main( int argc, char* args[] )
                     
                 if (state[SDL_SCANCODE_A])
                 {
-                    if (stretchRect.x <= 0);
+                    if (stretchRect.x <= 32);
 
                     else
                         stretchRect.x -= sheepSpeed;
@@ -1233,7 +1233,7 @@ int main( int argc, char* args[] )
                     
                 if (state[SDL_SCANCODE_D])
                 {
-                    if (stretchRect.x >= 590);
+                    if (stretchRect.x >= 583);
 
                     else
                         stretchRect.x += sheepSpeed;
