@@ -211,7 +211,6 @@ void close()
     SDL_FreeSurface (gScreenSurface);
     gScreenSurface = NULL;
 
-
     //Destroy window
     SDL_DestroyWindow( gWindow );
     gWindow = NULL;
@@ -304,8 +303,6 @@ void terr_print()
         }
     }
 }
-
-
 
 void safe_zone(int & safe)
 {
@@ -1139,24 +1136,31 @@ int main( int argc, char* args[] )
         {   
             //Main loop flag
             bool quit = false;
+
             //Event handler
             SDL_Event e;
-            SDL_Rect stretchRect;
-            SDL_Rect border1;
-            SDL_Rect border2;
-            SDL_Rect border3;
-            SDL_Rect border4;
-            SDL_Surface *back;
-            SDL_Surface *bor1;
-            SDL_Surface *bor2;
-            SDL_Surface *bor3;
-            SDL_Surface *bor4;     
+
+            //rects
+            SDL_Rect SpaceSheep;    // sheep
+            SDL_Rect background;    //background
+            SDL_Rect border1;   // top
+            SDL_Rect border2;   // bottom
+            SDL_Rect border3;   // left
+            SDL_Rect border4;   // right
+            //surfaces
+            SDL_Surface *back;  // background
+            SDL_Surface *bor1;  // top
+            SDL_Surface *bor2;  // bottom
+            SDL_Surface *bor3;  // left
+            SDL_Surface *bor4;  // right
+
             back = SDL_CreateRGBSurface(0, 640, 480, 32, 0, 0, 0, 0);
             bor1 = SDL_CreateRGBSurface(0, 640, 480, 32, 0, 0, 0, 0);
             bor2 = SDL_CreateRGBSurface(0, 640, 480, 32, 0, 0, 0, 0);
             bor3 = SDL_CreateRGBSurface(0, 640, 480, 32, 0, 0, 0, 0);
             bor4 = SDL_CreateRGBSurface(0, 640, 480, 32, 0, 0, 0, 0);
-            SDL_Rect background;
+            
+            //border dimentions
             border1.x = 0;
             border1.y = 0;
             border1.w = 32;
@@ -1177,20 +1181,26 @@ int main( int argc, char* args[] )
             border4.w = 640;
             border4.h = 32;
 
+            //background dimentions
             background.x = 0;
             background.y = 0;
             background.w = 640;
             background.h = 480;
+
+            //sheep starting dimentions
+            SpaceSheep.x = 300;
+            SpaceSheep.y = 200;
+            SpaceSheep.w = 25;
+            SpaceSheep.h = 25;
+
+            //color rects
             SDL_FillRect(back, NULL, SDL_MapRGB(back->format, 0, 0, 0));
             SDL_FillRect(bor1, NULL, SDL_MapRGB(bor1->format, 255, 0, 0));
             SDL_FillRect(bor2, NULL, SDL_MapRGB(bor2->format, 255, 0, 0));
             SDL_FillRect(bor3, NULL, SDL_MapRGB(bor3->format, 255, 0, 0));
             SDL_FillRect(bor4, NULL, SDL_MapRGB(bor4->format, 255, 0, 0));
 
-            stretchRect.x = 300;
-            stretchRect.y = 200;
-            stretchRect.w = 25;
-            stretchRect.h = 25;
+
             zone();
 
             TTF_Font *font;
@@ -1200,43 +1210,44 @@ int main( int argc, char* args[] )
             // if(i == 1)
             //     return 0;
             
-            int sheepSpeed = 3;
-            bool sheep_screen = true;
+            int sheepSpeed = 3;         //sheep speed, duh
+            bool sheep_screen = true;   //is sheep alive
 
             //While application is running
             while( !quit )
             {
+                //movement
                 const Uint8 *state = SDL_GetKeyboardState(NULL);
-                if (state[SDL_SCANCODE_W])
+                if (state[SDL_SCANCODE_W])          //up
                 {
-                    if (stretchRect.y <= 32);
+                    if (SpaceSheep.y <= 32);    //if hitting the edge, don't move
 
                     else
-                        stretchRect.y -= sheepSpeed;
+                        SpaceSheep.y -= sheepSpeed; // else move
                 }
 
-                if (state[SDL_SCANCODE_S])
+                if (state[SDL_SCANCODE_S])          //down
                 {
-                    if (stretchRect.y >= 422);
+                    if (SpaceSheep.y >= 422);
 
                     else
-                        stretchRect.y += sheepSpeed;
-                }
-                    
-                if (state[SDL_SCANCODE_A])
-                {
-                    if (stretchRect.x <= 32);
-
-                    else
-                        stretchRect.x -= sheepSpeed;
+                        SpaceSheep.y += sheepSpeed;
                 }
                     
-                if (state[SDL_SCANCODE_D])
+                if (state[SDL_SCANCODE_A])          //left
                 {
-                    if (stretchRect.x >= 583);
+                    if (SpaceSheep.x <= 32);
 
                     else
-                        stretchRect.x += sheepSpeed;
+                        SpaceSheep.x -= sheepSpeed;
+                }
+                    
+                if (state[SDL_SCANCODE_D])          //right
+                {
+                    if (SpaceSheep.x >= 583);
+
+                    else
+                        SpaceSheep.x += sheepSpeed;
                 }
 
                 //Handle events on queue
@@ -1252,11 +1263,11 @@ int main( int argc, char* args[] )
                 {
                     timer.start();
                 }
-                SDL_BlitScaled(back, NULL, gScreenSurface, &background);
+                SDL_BlitScaled(back, NULL, gScreenSurface, &background);    // blit background behind everything
                 terr_generation();
                 fill_in(safe);
                 terr_print();
-                SDL_BlitScaled(bor1, NULL, gScreenSurface, &border1);
+                SDL_BlitScaled(bor1, NULL, gScreenSurface, &border1);       // blit borders ontop of everything
                 SDL_BlitScaled(bor2, NULL, gScreenSurface, &border2);
                 SDL_BlitScaled(bor3, NULL, gScreenSurface, &border3);
                 SDL_BlitScaled(bor4, NULL, gScreenSurface, &border4);
@@ -1290,14 +1301,14 @@ int main( int argc, char* args[] )
                             break;
                     }
                 }
-                if (collision_check(stretchRect)) 
+                if (collision_check(SpaceSheep)) 
                 {
                     sheep_screen = false;
                 }
 
                 if (sheep_screen)
                 {
-                    SDL_BlitScaled(sheep, NULL, gScreenSurface, &stretchRect);
+                    SDL_BlitScaled(sheep, NULL, gScreenSurface, &SpaceSheep);   // finally blit sheep
                 }
                 
                 SDL_UpdateWindowSurface(gWindow);

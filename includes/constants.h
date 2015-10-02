@@ -37,9 +37,9 @@ void close();
 
 //Loads individual image
 SDL_Surface* loadSurface( std::string path );
-    
-SDL_Surface* sheep = NULL;
 
+//Sheep image    
+SDL_Surface* sheep = NULL;
 
 //Current displayed image
 SDL_Surface* gStretchedSurface = NULL;
