@@ -20,16 +20,16 @@ Game play instructions
 -----------------------
 ### Menu Instructions:
 Either select the menu item or use the following keys:
-+ Enter - Play
-+ ESC - Exit
++ *Enter* - Play
++ *ESC* - Exit
 
 Spaceship basic controls 
-+ W - Move North
-+ A - Move West
-+ S - Move South
-+ D - Move East
-+ WA - North West
-+ WD - North East
-+ Sa - South West
-+ SD - South East
++ *W* - Move North
++ *A* - Move West
++ *S* - Move South
++ *D* - Move East
++ *WA* - North West
++ *WD* - North East
++ *Sa* - South West
++ *SD* - South East
 
