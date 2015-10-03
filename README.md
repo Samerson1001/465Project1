@@ -11,10 +11,12 @@ incoming asteroids.
 Build instructions:
 -------------------
 + Download all of the files
+
 **You will need the following libraries installed to run the game:**
 + SDL2_image
 + SDL2_ttf
 + SDL2_mixer
+
 **Once downloaded and in the game directory, run the following commands in the Terminal:**
 + *make*
 + *make run* or *./main*
