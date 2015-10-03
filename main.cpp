@@ -184,7 +184,7 @@ bool init()
         //return false;
         //}
         //Create window
-        gWindow = SDL_CreateWindow( "SDL Tutorial", SDL_WINDOWPOS_UNDEFINED, SDL_WINDOWPOS_UNDEFINED, SCREEN_WIDTH, SCREEN_HEIGHT, SDL_WINDOW_SHOWN );
+        gWindow = SDL_CreateWindow( "SpaceSheep Adventures", SDL_WINDOWPOS_UNDEFINED, SDL_WINDOWPOS_UNDEFINED, SCREEN_WIDTH, SCREEN_HEIGHT, SDL_WINDOW_SHOWN );
         if( gWindow == NULL )
         {
             printf( "Window could not be created! SDL Error: %s\n", SDL_GetError() );
@@ -1090,9 +1090,9 @@ bool collision_check(SDL_Rect & rect)
         {
             bool flag = true;
             
-            int left1 = asteroid[i].ast.x - 2;
+            int left1 = asteroid[i].ast.x + 4;
             int right1 = asteroid[i].ast.x + asteroid[i].ast.w - 2;
-            int top1 = asteroid[i].ast.y - 2;
+            int top1 = asteroid[i].ast.y - 4;
             int bottom1 = asteroid[i].ast.y + asteroid[i].ast.h - 2;
             // Check edges
             if ( left1 > right2 )// Left 1 is right of right 2
@@ -1119,9 +1119,9 @@ bool collision_check(SDL_Rect & rect)
         {
             bool flag = true;
             
-            int left1 = fill[i].ast.x - 2;
+            int left1 = fill[i].ast.x;
             int right1 = fill[i].ast.x + fill[i].ast.w - 2;
-            int top1 = fill[i].ast.y - 2;
+            int top1 = fill[i].ast.y;
             int bottom1 = fill[i].ast.y + fill[i].ast.h - 2;
             // Check edges
             if ( left1 > right2 )// Left 1 is right of right 2
@@ -1166,8 +1166,8 @@ int main( int argc, char* args[] )
           TTF_Init();
           font = TTF_OpenFont("includes/game_over.ttf",60);
           
-					if (!menu(gScreenSurface, font))
-					{
+          if (!menu(gScreenSurface, font))
+          {
             //Main loop flag
             bool quit = false;
 
@@ -1395,11 +1395,11 @@ int main( int argc, char* args[] )
                     SDL_BlitScaled(sheep, NULL, gScreenSurface, &SpaceSheep);   // finally blit sheep
                 }
                 
-        				// Blit the score onto the screen
+                // Blit the score onto the screen
                 SDL_Color score_color = {255, 0, 0};
-        				score.surface = TTF_RenderText_Solid(font, std::to_string(scoreCount).c_str(), score_color);
-        				SDL_BlitSurface(scoreTxt, NULL, gScreenSurface, &scoreText);
-        				SDL_BlitSurface(score.surface, NULL, gScreenSurface, &score.rect);
+                score.surface = TTF_RenderText_Solid(font, std::to_string(scoreCount).c_str(), score_color);
+                SDL_BlitSurface(scoreTxt, NULL, gScreenSurface, &scoreText);
+                SDL_BlitSurface(score.surface, NULL, gScreenSurface, &score.rect);
                 
                 // GAME OVER screen
                 while (quit)
@@ -1443,11 +1443,7 @@ int main( int argc, char* args[] )
         }   
     }
     
-    //while(quit)
-    //{
-    
-    //}
-//Free resources and close SDL
+    //Free resources and close SDL
 	close();
     
 	return 0;
