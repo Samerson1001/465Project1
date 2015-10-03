@@ -1,34 +1,34 @@
 # 465Project1
 Spaceship project for CISS 465
 =======
-Spaceship project for CISS465
 
 Basic Game Description:
 
-The objective of the game will be flying a spaceship in space while avoiding oncoming meteors.
+The objective of the game will be flying a spacesheep in space while avoiding
+incoming asteroids. 
 
 Build instructions:
 
 Download all of the files.
-(You will need SDL2_image and SDL2_ttf librariers to run this game.
-Once downloaded, pull up the file folder called SpaceAdventure
+(You will need SDL2_image,SDL2_ttf, and SDL2_mixer librariers to run this game.
+Once downloaded, run make clean. Then next in the terminal run make.
 
-In the terminal type :  make
-                     :  make run
+In your command line then type ./main to run the program or make run. 
 
-
-Game play instructions (to be further adjusted)
+Game play instructions
 
 Menu Instructions:
 Either select the menu item or use the following keys:
   Enter - Play
   ESC - Exit
-  I - Information/Game play 
 
 Spaceship basic controls 
   W - Move North
   A - Move West
   S - Move South
   D - Move East
-  ESC - Open Main Menu
-Diagonal keys not yet decided
+  WA - North West
+  WD - North East
+  Sa - South West
+  SD - South East
+
