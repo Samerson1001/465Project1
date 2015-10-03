@@ -1,5 +1,5 @@
 SDL_CFLAGS := $(shell sdl2-config --cflags)
-SDL_LDFLAGS := $(shell sdl2-config --libs) -lSDL2_image -lSDL2_ttf
+SDL_LDFLAGS := $(shell sdl2-config --libs) -lSDL2_image -lSDL2_ttf -lSDL2_mixer
 
 
 main: main.o

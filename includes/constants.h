@@ -1,5 +1,6 @@
 #include <SDL.h>
 #include <SDL/SDL_image.h>
+#include "SDL/SDL_mixer.h"
 #include <stdio.h>
 #include <string>
 
@@ -24,7 +25,11 @@ SDL_Renderer* gRenderer = NULL;
 //Current displayed texture
 SDL_Texture* gTexture = NULL;
 
+// Game screen Surface
 SDL_Surface* gScreenSurface= NULL;
+
+// Music
+Mix_Music *music = NULL; 
 
 //Starts up SDL and creates window
 bool init();
