@@ -1068,6 +1068,7 @@ int main( int argc, char* args[] )
             SDL_Rect gameOverScreen; //game over screen
             SDL_Rect gameOverText; // gameover text
             SDL_Rect scoreText; // score text
+            SDL_Rect playAgain; // play again text
             SDL_Rect border1;   // top
             SDL_Rect border2;   // bottom
             SDL_Rect border3;   // left
@@ -1081,6 +1082,7 @@ int main( int argc, char* args[] )
             SDL_Surface *gameOver; // gameover
             SDL_Surface *gameOverTxt; // gameover text
             SDL_Surface *scoreTxt; // score text
+            SDL_Surface *play; // play again text
             
 
             back = SDL_CreateRGBSurface(0, 640, 480, 32, 0, 0, 0, 0);
@@ -1091,6 +1093,7 @@ int main( int argc, char* args[] )
             gameOver = SDL_CreateRGBSurface(0, 640, 480, 32, 0, 0, 0, 0);
             gameOverTxt = TTF_RenderText_Solid(font, "Game Over", {255,0,0});
             scoreTxt = TTF_RenderText_Solid(font, "Score:", {255,0,0});
+            play = TTF_RenderText_Solid(font, "Press ENTER to Play Again", {255,0,0});
             
             //border dimentions
             border1.x = 0;
@@ -1132,6 +1135,10 @@ int main( int argc, char* args[] )
             //score text position
             scoreText.x = 450;
             scoreText.y = 30;
+            
+            // play text position
+            playAgain.x = 170;
+            playAgain.y = 250;
             
 
             //sheep starting dimensions
@@ -1294,6 +1301,7 @@ int main( int argc, char* args[] )
                 	scoreText.y = 200;
                 	SDL_BlitSurface(scoreTxt, NULL, gScreenSurface, &scoreText);
                 	SDL_BlitSurface(score.surface, NULL, gScreenSurface, &score.rect);
+                	SDL_BlitSurface(play, NULL, gScreenSurface, &playAgain);
                 	
                 	//Handle events on queue
                 	if( SDL_PollEvent( &e ) != 0 )
