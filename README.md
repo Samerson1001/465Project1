@@ -10,11 +10,15 @@ incoming asteroids.
 
 Build instructions:
 -------------------
-Download all of the files.
-(You will need SDL2_image,SDL2_ttf, and SDL2_mixer librariers to run this game.
-Once downloaded, run make clean. Then next in the terminal run make.
-
-In your command line then type ./main to run the program or make run. 
++ Download all of the files
+**You will need the following libraries installed to run the game:**
++ SDL2_image
++ SDL2_ttf
++ SDL2_mixer
+**Once downloaded and in the game directory, run the following commands in the Terminal:**
++ *make*
++ *make run* or *./main*
++ Enjoy!
 
 Game play instructions
 -----------------------
