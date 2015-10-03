@@ -1188,6 +1188,8 @@ int main( int argc, char* args[] )
             SDL_Rect SpaceSheep;    // sheep
             SDL_Rect background;    //background
             SDL_Rect gameOverScreen; //game over screen
+            SDL_Rect gameOverText; // gameover text
+            SDL_Rect scoreText; // score text
             SDL_Rect border1;   // top
             SDL_Rect border2;   // bottom
             SDL_Rect border3;   // left
@@ -1199,6 +1201,9 @@ int main( int argc, char* args[] )
             SDL_Surface *bor3;  // left
             SDL_Surface *bor4;  // right
             SDL_Surface *gameOver; // gameover
+            SDL_Surface *gameOverTxt; // gameover text
+            SDL_Surface *scoreTxt; // score text
+            
 
             back = SDL_CreateRGBSurface(0, 640, 480, 32, 0, 0, 0, 0);
             bor1 = SDL_CreateRGBSurface(0, 640, 480, 32, 0, 0, 0, 0);
@@ -1206,6 +1211,8 @@ int main( int argc, char* args[] )
             bor3 = SDL_CreateRGBSurface(0, 640, 480, 32, 0, 0, 0, 0);
             bor4 = SDL_CreateRGBSurface(0, 640, 480, 32, 0, 0, 0, 0);
             gameOver = SDL_CreateRGBSurface(0, 640, 480, 32, 0, 0, 0, 0);
+            gameOverTxt = TTF_RenderText_Solid(font, "Game Over", {255,0,0});
+            scoreTxt = TTF_RenderText_Solid(font, "Score:", {255,0,0});
             
             //border dimentions
             border1.x = 0;
@@ -1239,6 +1246,15 @@ int main( int argc, char* args[] )
             gameOverScreen.y = 0;
             gameOverScreen.w = 640;
             gameOverScreen.h = 480;
+            
+            //gameover text position
+            gameOverText.x = 255;
+            gameOverText.y = 150;
+            
+            //score text position
+            scoreText.x = 450;
+            scoreText.y = 30;
+            
 
             //sheep starting dimensions
             SpaceSheep.x = 300;
@@ -1274,6 +1290,7 @@ int main( int argc, char* args[] )
         				{
         					scoreTimer.start();
         				}
+        				// update the score counter by 1 point every 1/10 of a second
         				if (scoreTimer.getTicks() >= 100)
         				{
         					++scoreCount;
@@ -1369,8 +1386,8 @@ int main( int argc, char* args[] )
                 if (collision_check(SpaceSheep)) 
                 {
                     sheep_screen = false;
-                    //scoreTimer.stop();
-                    //SDL_BlitScaled(gameOver, NULL, gScreenSurface, &gameOverScreen);
+                    scoreTimer.stop();
+                    quit = true;
                 }
 
                 if (sheep_screen)
@@ -1381,7 +1398,41 @@ int main( int argc, char* args[] )
         				// Blit the score onto the screen
                 SDL_Color score_color = {255, 0, 0};
         				score.surface = TTF_RenderText_Solid(font, std::to_string(scoreCount).c_str(), score_color);
+        				SDL_BlitSurface(scoreTxt, NULL, gScreenSurface, &scoreText);
         				SDL_BlitSurface(score.surface, NULL, gScreenSurface, &score.rect);
+                
+                // GAME OVER screen
+                while (quit)
+                {
+                	bool closeGame = false;
+                	
+                	SDL_BlitScaled(gameOver, NULL, gScreenSurface, &gameOverScreen);
+                	
+                	// Position score in center of screen
+                	score.rect.x = 350;
+                	score.rect.y = 200;
+                	SDL_BlitSurface(gameOverTxt, NULL, gScreenSurface, &gameOverText);
+                	scoreText.x = 240;
+                	scoreText.y = 200;
+                	SDL_BlitSurface(scoreTxt, NULL, gScreenSurface, &scoreText);
+                	SDL_BlitSurface(score.surface, NULL, gScreenSurface, &score.rect);
+                	
+                	//Handle events on queue
+                	if( SDL_PollEvent( &e ) != 0 )
+                	{
+                    //User requests quit
+                    if( e.type == SDL_QUIT )
+                    {
+                        closeGame = true;
+                    }                
+               		}
+               		
+               		// Close program
+               		if ( closeGame ) break;
+               		
+                	SDL_UpdateWindowSurface(gWindow);
+                	SDL_Delay(20);
+                }
                 
                 SDL_UpdateWindowSurface(gWindow);
                 SDL_Delay(20); 
@@ -1391,6 +1442,11 @@ int main( int argc, char* args[] )
             }
         }   
     }
+    
+    //while(quit)
+    //{
+    
+    //}
 //Free resources and close SDL
 	close();
     
