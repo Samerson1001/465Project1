@@ -1065,7 +1065,7 @@ int main( int argc, char* args[] )
             gameOver = SDL_CreateRGBSurface(0, 640, 480, 32, 0, 0, 0, 0);
             gameOverTxt = TTF_RenderText_Solid(font, "Game Over", {255,0,0});
             scoreTxt = TTF_RenderText_Solid(font, "Score:", {255,0,0});
-            play = TTF_RenderText_Solid(font, "Press ENTER to Play Again", {255,0,0});
+            play = TTF_RenderText_Solid(font, "Thanks for Playing!", {255,0,0});
             // Safe Zone Coordinates and dimensions
              zone1.x = 640;
              zone1.y = 0;
@@ -1149,7 +1149,7 @@ int main( int argc, char* args[] )
             scoreText.y = 30;
             
             // play text position
-            playAgain.x = 170;
+            playAgain.x = 225;
             playAgain.y = 250;
             
 
