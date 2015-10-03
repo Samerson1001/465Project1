@@ -29,7 +29,7 @@ SDL_Texture* gTexture = NULL;
 SDL_Surface* gScreenSurface= NULL;
 
 // Music
-Mix_Music *music = NULL; 
+//Mix_Music *music = NULL; 
 
 //Starts up SDL and creates window
 bool init();

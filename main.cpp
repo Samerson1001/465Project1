@@ -167,10 +167,10 @@ bool init()
     }
     else
     {
-        if( Mix_OpenAudio( 22050, MIX_DEFAULT_FORMAT, 2, 4096 ) == -1 )
-        {
-        return false;
-    }
+        //if( Mix_OpenAudio( 22050, MIX_DEFAULT_FORMAT, 2, 4096 ) == -1 )
+        //{
+        //return false;
+        //}
         //Create window
         gWindow = SDL_CreateWindow( "SDL Tutorial", SDL_WINDOWPOS_UNDEFINED, SDL_WINDOWPOS_UNDEFINED, SCREEN_WIDTH, SCREEN_HEIGHT, SDL_WINDOW_SHOWN );
         if( gWindow == NULL )
@@ -194,8 +194,8 @@ bool loadMedia()
     bool success = true;
 
     sheep = SDL_LoadBMP("images/sheep.bmp");
-    music = Mix_LoadMUS( "GameLoop.wav" );
-    if( music == NULL ) { return false; }
+    //music = Mix_LoadMUS( "GameLoop.wav" );
+    //if( music == NULL ) { return false; }
     if( sheep == NULL )
     {
         printf( "Failed to load stretching image!\n" );
@@ -222,10 +222,10 @@ void close()
     gWindow = NULL;
 
     //Free the music
-    Mix_FreeMusic( music );
+    //Mix_FreeMusic( music );
     
     //Quit SDL_mixer
-    Mix_CloseAudio();
+    //Mix_CloseAudio();
 
     //Quit SDL_ttf
     TTF_Quit();
@@ -1156,14 +1156,14 @@ int main( int argc, char* args[] )
             SDL_Event e;
 
             //If there is no music playing
-            if( Mix_PlayingMusic() == 0 )
-            {
-                //Play the music
-                if( Mix_PlayMusic( music, -1 ) == -1 )
-                {
-                    return 1;
-                }
-            }
+            //if( Mix_PlayingMusic() == 0 )
+            //{
+            //    //Play the music
+            //    if( Mix_PlayMusic( music, -1 ) == -1 )
+            //    {
+            //        return 1;
+            //    }
+            //}
 
             //rects
             SDL_Rect SpaceSheep;    // sheep
