@@ -1,6 +1,6 @@
 Game Requirements
 
-Game Screen Size: 1280 x 1024
+Game Screen Size: 640 x 480
 
 Spaceship that can move across screen (diagonal movements included)
 	Either use arrow keys or possibly use the mouse to move the ship.
@@ -8,7 +8,6 @@ Spaceship that can move across screen (diagonal movements included)
 Terrain:
 	Randomly generated terrain (procedural generation) during gameplay
 	Tricky, but not impossible to play
-	Terrain will be similar to the app "Flappy Bird"
 
 Points:
 	Displayed/updated every .10 seconds

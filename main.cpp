@@ -8,6 +8,7 @@ and may not be redistributed without written permission.*/
 #include "constants.h"
 #include <SDL/SDL_image.h>
 #include <SDL/SDL_ttf.h>
+#include "SDL/SDL_mixer.h"
 #include "asteroid.h"
 #include "score.h"
 #include "LTimer.h"
@@ -171,13 +172,17 @@ bool init()
     bool success = true;
 
     //Initialize SDL
-    if( SDL_Init( SDL_INIT_VIDEO ) < 0 )
+    if( SDL_Init( SDL_INIT_EVERYTHING ) < 0 )
     {
         printf( "SDL could not initialize! SDL Error: %s\n", SDL_GetError() );
         success = false;
     }
     else
     {
+        if( Mix_OpenAudio( 22050, MIX_DEFAULT_FORMAT, 2, 4096 ) == -1 )
+        {
+        return false;
+    }
         //Create window
         gWindow = SDL_CreateWindow( "SDL Tutorial", SDL_WINDOWPOS_UNDEFINED, SDL_WINDOWPOS_UNDEFINED, SCREEN_WIDTH, SCREEN_HEIGHT, SDL_WINDOW_SHOWN );
         if( gWindow == NULL )
@@ -201,7 +206,8 @@ bool loadMedia()
     bool success = true;
 
     sheep = SDL_LoadBMP("images/sheep.bmp");
-
+    music = Mix_LoadMUS( "GameLoop.wav" );
+    if( music == NULL ) { return false; }
     if( sheep == NULL )
     {
         printf( "Failed to load stretching image!\n" );
@@ -226,6 +232,15 @@ void close()
     //Destroy window
     SDL_DestroyWindow( gWindow );
     gWindow = NULL;
+
+    //Free the music
+    Mix_FreeMusic( music );
+    
+    //Quit SDL_mixer
+    Mix_CloseAudio();
+
+    //Quit SDL_ttf
+    TTF_Quit();
 
     //Quit SDL subsystems
     SDL_Quit();
@@ -1158,6 +1173,16 @@ int main( int argc, char* args[] )
 
             //Event handler
             SDL_Event e;
+
+            //If there is no music playing
+            if( Mix_PlayingMusic() == 0 )
+            {
+                //Play the music
+                if( Mix_PlayMusic( music, -1 ) == -1 )
+                {
+                    return 1;
+                }
+            }
 
             //rects
             SDL_Rect SpaceSheep;    // sheep
