@@ -6,7 +6,7 @@ main: main.o
 	g++ $(SDL_LDFLAGS) main.o -o main
 
 main.o: main.cpp
-	g++ -c -Iincludes $(SDL_CFLAGS) main.cpp
+	g++ -std=c++11 -c -Iincludes $(SDL_CFLAGS) main.cpp
 
 run:
 	./main

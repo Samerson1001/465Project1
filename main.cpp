@@ -9,7 +9,10 @@ and may not be redistributed without written permission.*/
 #include <SDL/SDL_image.h>
 #include <SDL/SDL_ttf.h>
 #include "asteroid.h"
+#include "score.h"
 #include "LTimer.h"
+#include <sstream>
+#include <iostream>
 
 Asteroid asteroid[100];
 Asteroid fill[100];
@@ -27,7 +30,7 @@ LTimer timer;
 
 
 // General layout of menu was referenced from Lazy Foo Tutorials
-int menu(SDL_Surface* screen, TTF_Font* font)
+bool menu(SDL_Surface* screen, TTF_Font* font)
 {
 	Uint32 time;
 	int x, y;
@@ -98,7 +101,7 @@ int menu(SDL_Surface* screen, TTF_Font* font)
 					}
 					break;
 
-				// Free surfaces once the menu items have been clicked
+				// Free surfaces once the menu items have been clicked and return true or false depending on which item was clicked
 				case SDL_MOUSEBUTTONDOWN:
 					x=event.button.x;
 					y=event.button.y;
@@ -117,13 +120,22 @@ int menu(SDL_Surface* screen, TTF_Font* font)
 
 				// If escape key is pressed, free surfaces
 				case SDL_KEYDOWN:
-					if(event.key.keysym.sym==SDLK_ESCAPE)
+					if(event.key.keysym.sym == SDLK_ESCAPE)
 					{
 						for(int i = 0; i < MENU_ITEMS; i++)
 						{
 							SDL_FreeSurface(menus[i]);
 						}
 
+						return 1;
+					}
+					else if (event.key.keysym.sym == SDLK_RETURN)
+					{
+						for (int i = 0; i < MENU_ITEMS; i++)
+						{
+							SDL_FreeSurface(menus[i]);
+						}
+						
 						return 0;
 					}
 			}
@@ -1134,6 +1146,13 @@ int main( int argc, char* args[] )
         }
         else
         {   
+        	// Load font for game
+          TTF_Font *font;
+          TTF_Init();
+          font = TTF_OpenFont("includes/game_over.ttf",60);
+          
+					if (!menu(gScreenSurface, font))
+					{
             //Main loop flag
             bool quit = false;
 
@@ -1143,6 +1162,7 @@ int main( int argc, char* args[] )
             //rects
             SDL_Rect SpaceSheep;    // sheep
             SDL_Rect background;    //background
+            SDL_Rect gameOverScreen; //game over screen
             SDL_Rect border1;   // top
             SDL_Rect border2;   // bottom
             SDL_Rect border3;   // left
@@ -1153,12 +1173,14 @@ int main( int argc, char* args[] )
             SDL_Surface *bor2;  // bottom
             SDL_Surface *bor3;  // left
             SDL_Surface *bor4;  // right
+            SDL_Surface *gameOver; // gameover
 
             back = SDL_CreateRGBSurface(0, 640, 480, 32, 0, 0, 0, 0);
             bor1 = SDL_CreateRGBSurface(0, 640, 480, 32, 0, 0, 0, 0);
             bor2 = SDL_CreateRGBSurface(0, 640, 480, 32, 0, 0, 0, 0);
             bor3 = SDL_CreateRGBSurface(0, 640, 480, 32, 0, 0, 0, 0);
             bor4 = SDL_CreateRGBSurface(0, 640, 480, 32, 0, 0, 0, 0);
+            gameOver = SDL_CreateRGBSurface(0, 640, 480, 32, 0, 0, 0, 0);
             
             //border dimentions
             border1.x = 0;
@@ -1181,13 +1203,19 @@ int main( int argc, char* args[] )
             border4.w = 640;
             border4.h = 32;
 
-            //background dimentions
+            //background dimensions
             background.x = 0;
             background.y = 0;
             background.w = 640;
             background.h = 480;
+            
+            //gameover dimensions
+            gameOverScreen.x = 0;
+            gameOverScreen.y = 0;
+            gameOverScreen.w = 640;
+            gameOverScreen.h = 480;
 
-            //sheep starting dimentions
+            //sheep starting dimensions
             SpaceSheep.x = 300;
             SpaceSheep.y = 200;
             SpaceSheep.w = 25;
@@ -1199,24 +1227,35 @@ int main( int argc, char* args[] )
             SDL_FillRect(bor2, NULL, SDL_MapRGB(bor2->format, 255, 0, 0));
             SDL_FillRect(bor3, NULL, SDL_MapRGB(bor3->format, 255, 0, 0));
             SDL_FillRect(bor4, NULL, SDL_MapRGB(bor4->format, 255, 0, 0));
+            SDL_FillRect(gameOver, NULL, SDL_MapRGB(gameOver->format, 0, 0, 0));
 
 
             zone();
-
-            TTF_Font *font;
-            TTF_Init();
-            font = TTF_OpenFont("includes/game_over.ttf",60);
-            int i = menu(gScreenSurface,font);
-            if(i == 1)
-                return 0;
             
             double sheepSpeedX = 3;         //sheep speed, duh
             double sheepSpeedY = 3.5; 
             bool sheep_screen = true;   //is sheep alive
+            
+            // initialize score counter, create score object, and create score timer
+            int scoreCount = 0;
+            Score score;
+            
+            LTimer scoreTimer;
 
             //While application is running
             while( !quit )
             {
+        				if (!scoreTimer.isStarted())
+        				{
+        					scoreTimer.start();
+        				}
+        				if (scoreTimer.getTicks() >= 100)
+        				{
+        					++scoreCount;
+        					scoreTimer.stop();
+        				}
+           			
+            		
                 //movement
                 const Uint8 *state = SDL_GetKeyboardState(NULL);
                 if (state[SDL_SCANCODE_W])          //up
@@ -1305,6 +1344,8 @@ int main( int argc, char* args[] )
                 if (collision_check(SpaceSheep)) 
                 {
                     sheep_screen = false;
+                    //scoreTimer.stop();
+                    //SDL_BlitScaled(gameOver, NULL, gScreenSurface, &gameOverScreen);
                 }
 
                 if (sheep_screen)
@@ -1312,8 +1353,16 @@ int main( int argc, char* args[] )
                     SDL_BlitScaled(sheep, NULL, gScreenSurface, &SpaceSheep);   // finally blit sheep
                 }
                 
+        				// Blit the score onto the screen
+                SDL_Color score_color = {255, 0, 0};
+        				score.surface = TTF_RenderText_Solid(font, std::to_string(scoreCount).c_str(), score_color);
+        				SDL_BlitSurface(score.surface, NULL, gScreenSurface, &score.rect);
+                
                 SDL_UpdateWindowSurface(gWindow);
-                SDL_Delay(20);                
+                SDL_Delay(20); 
+                
+               	 
+              }             
             }
         }   
     }
