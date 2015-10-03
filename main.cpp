@@ -16,6 +16,7 @@ and may not be redistributed without written permission.*/
 #include <sstream>
 #include <iostream>
 
+
 Asteroid asteroid[100];
 Asteroid fill[100];
 SDL_Rect zone1;
@@ -26,9 +27,9 @@ SDL_Rect zone5;
 SDL_Rect zone6;
 SDL_Rect zone7;
 SDL_Rect zone8;
-
 int safe = rand() % 8 + 1;
 LTimer timer;
+
 
 
 void terr_generation()
@@ -152,14 +153,18 @@ SDL_Surface* loadSurface( std::string path )
 
 void terr_print()
 {
+    // Scans the array of asteroids
     for (int i = 0; i < 100; ++i)
     {
+        // If the asteroid is on screen, performs an overlap check
         if (asteroid[i].screen)
         {
             for (int l = 0; l < 100; ++l)
             {
                 if (asteroid[l].screen)
                 {
+                    // If the asteroid overlaps, it is given new x/y values
+                    // and taken off the screen
                     if (asteroid[i].overlap_check(asteroid[l]))
                     {
                         asteroid[i].screen = false;
@@ -170,10 +175,13 @@ void terr_print()
             }
         }
     }
+    // For loop to scan the fill in asteroid array
     for (int i = 0; i < 100; ++i)
     {
+        // If the fill in asteroid is on the screen
         if (fill[i].screen)
         {
+            // Runs an overlap check vs the fill array and asteroid array
             for (int l = 0; l < 100; ++l)
             {
                 if (asteroid[l].screen)
@@ -194,10 +202,10 @@ void terr_print()
         }
     }
 
-    
+    // For loop to scan both fill in and asteroid array
     for (int i = 0; i < 100; ++i)
     {
-       
+        // If they are on screen, it calls the print function to blit them
         if (asteroid[i].screen)
         {
             asteroid[i].print();
@@ -211,6 +219,10 @@ void terr_print()
 
 void safe_zone(int & safe)
 {
+    //********************************************************************
+    // Function takes in safe zone, then scans the array of asteroids
+    // then deletes any asteroids if they are within the active safe zones
+    //********************************************************************
     if (safe == 1)
     {
         int left1 = zone1.x;
@@ -797,12 +809,13 @@ void safe_zone(int & safe)
     
 }
 
-
 void fill_in(const int & safe)
 {
+    //*******************************************************************
     // Function looks at safe zone, if it isn't the safe zone, it should
     // put an asteroid inside the frame of the zone, so not zone 1 is any
-    // y value between 0 to 60. 
+    // y value between 0 to 60.
+    //*******************************************************************
     if (safe != 1)
     {
         for (int i = 0; i < 100; ++i)
@@ -812,7 +825,6 @@ void fill_in(const int & safe)
                 fill[i].screen = true;
                 fill[i].ast.x = 680;
                 fill[i].ast.y = rand() % 60;
-                
                 break;
             }
         }
@@ -826,7 +838,6 @@ void fill_in(const int & safe)
                 fill[i].screen = true;
                 fill[i].ast.x = 680;
                 fill[i].ast.y = rand() % 60 + 60;
-                
                 break;
             }
         }
@@ -840,7 +851,6 @@ void fill_in(const int & safe)
                 fill[i].screen = true;
                 fill[i].ast.x = 680;
                 fill[i].ast.y = rand() % 60 + 120;
-                
                 break;
             }
         }
@@ -854,7 +864,6 @@ void fill_in(const int & safe)
                 fill[i].screen = true;
                 fill[i].ast.x = 680;
                 fill[i].ast.y = rand() % 60 + 180;
-    
                 break;
             }
         }
@@ -867,8 +876,7 @@ void fill_in(const int & safe)
             {
                 fill[i].screen = true;
                 fill[i].ast.x = 680;
-                fill[i].ast.y = rand() % 60 + 240;
-                
+                fill[i].ast.y = rand() % 60 + 240;    
                 break;
             }
         }
@@ -882,7 +890,6 @@ void fill_in(const int & safe)
                 fill[i].screen = true;
                 fill[i].ast.x = 680;
                 fill[i].ast.y = rand() % 60 + 300;
-                
                 break;
             }
         }   
@@ -896,7 +903,6 @@ void fill_in(const int & safe)
                 fill[i].screen = true;
                 fill[i].ast.x = 680;
                 fill[i].ast.y = rand() % 60 + 360;
-                
                 break;
             }
         }
@@ -910,58 +916,23 @@ void fill_in(const int & safe)
                 fill[i].screen = true;
                 fill[i].ast.x = 680;
                 fill[i].ast.y = rand() % 60 + 420;
-                
                 break;
             }
         }
     }
 }
 
-void zone()
-{
-     zone1.x = 640;
-     zone1.y = 0;
-     zone1.w = 60;
-     zone1.h = 60;
-     zone2.x = 640;
-     zone2.y = 60;
-     zone2.w = 60;
-     zone2.h = 60;
-     zone3.x = 640;
-     zone3.y = 120;
-     zone3.w = 60;
-     zone3.h = 60;
-     zone4.x = 640;
-     zone4.y = 180;
-     zone4.w = 60;
-     zone4.h = 60;
-     zone5.x = 640;
-     zone5.y = 240;
-     zone5.w = 60;
-     zone5.h = 60;
-     zone6.x = 640;
-     zone6.y = 300;
-     zone6.w = 60;
-     zone6.h = 60;
-     zone7.x = 640;
-     zone7.y = 360;
-     zone7.w = 60;
-     zone7.h = 60;
-     zone8.x = 640;
-     zone8.y = 420;
-     zone8.w = 60;
-     zone8.h = 60;
-}
-
+// On clean up after project, this can be put inside of sheep class.
 bool collision_check(SDL_Rect & rect)
 {
+    // Takes the rect of the sheep
     int left2 = rect.x;
     int right2 = rect.x + rect.w;
     int top2 = rect.y;
     int bottom2 = rect.y + rect.h;
     bool check = false;
     
-    // Find edges of rect2
+    // Find edges of rect for the asteroid array if it is on the screen
     for (int i = 0; i < 100; ++i)
     {
         if (asteroid[i].screen)
@@ -991,6 +962,7 @@ bool collision_check(SDL_Rect & rect)
             }
         }
     }
+     // Find edges of rect for the fill in array if it is on the screen
     for (int i = 0; i < 100; ++i)
     {
         if (fill[i].screen)
@@ -1094,8 +1066,48 @@ int main( int argc, char* args[] )
             gameOverTxt = TTF_RenderText_Solid(font, "Game Over", {255,0,0});
             scoreTxt = TTF_RenderText_Solid(font, "Score:", {255,0,0});
             play = TTF_RenderText_Solid(font, "Press ENTER to Play Again", {255,0,0});
-            
-            //border dimentions
+            // Safe Zone Coordinates and dimensions
+             zone1.x = 640;
+             zone1.y = 0;
+             zone1.w = 60;
+             zone1.h = 60;
+             
+             zone2.x = 640;
+             zone2.y = 60;
+             zone2.w = 60;
+             zone2.h = 60;
+             
+             zone3.x = 640;
+             zone3.y = 120;
+             zone3.w = 60;
+             zone3.h = 60;
+             
+             zone4.x = 640;
+             zone4.y = 180;
+             zone4.w = 60;
+             zone4.h = 60;
+             
+             zone5.x = 640;
+             zone5.y = 240;
+             zone5.w = 60;
+             zone5.h = 60;
+             
+             zone6.x = 640;
+             zone6.y = 300;
+             zone6.w = 60;
+             zone6.h = 60;
+             
+             zone7.x = 640;
+             zone7.y = 360;
+             zone7.w = 60;
+             zone7.h = 60;
+             
+             zone8.x = 640;
+             zone8.y = 420;
+             zone8.w = 60;
+             zone8.h = 60;
+             
+             //border dimentions
             border1.x = 0;
             border1.y = 0;
             border1.w = 32;
@@ -1155,9 +1167,6 @@ int main( int argc, char* args[] )
             SDL_FillRect(bor4, NULL, SDL_MapRGB(bor4->format, 255, 0, 0));
             SDL_FillRect(gameOver, NULL, SDL_MapRGB(gameOver->format, 0, 0, 0));
 
-
-            zone();
-            
             double sheepSpeedX = 3;         //sheep speed, duh
             double sheepSpeedY = 3.5; 
             bool sheep_screen = true;   //is sheep alive
@@ -1240,8 +1249,10 @@ int main( int argc, char* args[] )
                 SDL_BlitScaled(bor4, NULL, gScreenSurface, &border4);
 
                 safe_zone(safe);
+                // Conditional to swap Safe Zones
                 if (timer.getTicks() % 750 > 500)
                 {
+                    // Random number for switch to change zones
                     int random = rand() % 10;
                   
                     switch (random % 2)
@@ -1268,16 +1279,18 @@ int main( int argc, char* args[] )
                             break;
                     }
                 }
+                // Check to see if sheep hits any asteroids
                 if (collision_check(SpaceSheep)) 
                 {
                     sheep_screen = false;
                     scoreTimer.stop();
                     quit = true;
                 }
-
+                // Check to see if sheep is alive
                 if (sheep_screen)
                 {
-                    SDL_BlitScaled(sheep, NULL, gScreenSurface, &SpaceSheep);   // finally blit sheep
+                    // finally blit sheep
+                    SDL_BlitScaled(sheep, NULL, gScreenSurface, &SpaceSheep);   
                 }
                 
                 // Blit the score onto the screen
@@ -1307,10 +1320,10 @@ int main( int argc, char* args[] )
                 	if( SDL_PollEvent( &e ) != 0 )
                 	{
                     //User requests quit
-                    if( e.type == SDL_QUIT )
-                    {
-                        closeGame = true;
-                    }                
+                        if( e.type == SDL_QUIT )
+                        {
+                            closeGame = true;
+                        }     
                		}
                		
                		// Close program
