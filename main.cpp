@@ -217,33 +217,62 @@ void terr_print()
     }
 }
 
-void safe_zone(int & safe)
+void safe_zone(const int & safe)
 {
     //********************************************************************
     // Function takes in safe zone, then scans the array of asteroids
     // then deletes any asteroids if they are within the active safe zones
     //********************************************************************
-    if (safe == 1)
+    int zone = safe - 1;
+    int left1 = 640;
+    int right1 = 672;
+    int top1 = zone * 60;
+    int bottom1 = zone * 60 + 60;
+    
+    // Find edges of rect2
+    for (int i = 0; i < 100; ++i)
     {
-        int left1 = zone1.x;
-        int right1 = zone1.x + zone1.w;
-        int top1 = zone1.y;
-        int bottom1 = zone1.y + zone2.h;
-       
-        // Find edges of rect2
-        for (int i = 0; i < 100; ++i)
+        bool flag = true;
+        
+        int left2 = asteroid[i].ast.x;
+        int right2 = asteroid[i].ast.x + asteroid[i].ast.w;
+        int top2 = asteroid[i].ast.y;
+        int bottom2 = asteroid[i].ast.y + asteroid[i].ast.h;
+        if (left1 == left2 && right1 == right2 &&
+            top1 == top2 && bottom1 == bottom2)
         {
-            bool flag = true;
+            flag = false;
+        }
+        // Check edges
+        if ( left1 > right2 )// Left 1 is right of right 2
+            flag = false; // No collision
+        
+        if ( right1 < left2 ) // Right 1 is left of left 2
+            flag = false; // No collision
+        
+        if ( top1 > bottom2 ) // Top 1 is below bottom 2
+            flag = false; // No collision
+        
+        if ( bottom1 < top2 ) // Bottom 1 is above top 2 
+            flag = false; // No collision
+        
+        if (flag == true)
+        {
+            asteroid[i].screen = false;
+            asteroid[i].ast.x = 680;
+            asteroid[i].ast.y = rand() % 480;
+        }
+    }
+    for (int i = 0; i < 100; ++i)
+    {
+        bool flag = true;
+        if (fill[i].screen)
+        {
+            int left2 = fill[i].ast.x;
+            int right2 = fill[i].ast.x + fill[i].ast.w;
+            int top2 = fill[i].ast.y;
+            int bottom2 = fill[i].ast.y + fill[i].ast.h;
             
-            int left2 = asteroid[i].ast.x;
-            int right2 = asteroid[i].ast.x + asteroid[i].ast.w;
-            int top2 = asteroid[i].ast.y;
-            int bottom2 = asteroid[i].ast.y + asteroid[i].ast.h;
-            if (left1 == left2 && right1 == right2 &&
-                top1 == top2 && bottom1 == bottom2)
-            {
-                flag = false;
-            }
             // Check edges
             if ( left1 > right2 )// Left 1 is right of right 2
                 flag = false; // No collision
@@ -256,557 +285,13 @@ void safe_zone(int & safe)
             
             if ( bottom1 < top2 ) // Bottom 1 is above top 2 
                 flag = false; // No collision
-
+            
             if (flag == true)
             {
-                asteroid[i].screen = false;
-                asteroid[i].ast.x = 680;
-                asteroid[i].ast.y = rand() % 480;
+                fill[i].screen = false;
             }
         }
-        for (int i = 0; i < 100; ++i)
-        {
-            bool flag = true;
-            if (fill[i].screen)
-            {
-                int left2 = fill[i].ast.x;
-                int right2 = fill[i].ast.x + fill[i].ast.w;
-                int top2 = fill[i].ast.y;
-                int bottom2 = fill[i].ast.y + fill[i].ast.h;
-                
-                // Check edges
-                if ( left1 > right2 )// Left 1 is right of right 2
-                    flag = false; // No collision
-                
-                if ( right1 < left2 ) // Right 1 is left of left 2
-                    flag = false; // No collision
-                
-                if ( top1 > bottom2 ) // Top 1 is below bottom 2
-                    flag = false; // No collision
-                
-                if ( bottom1 < top2 ) // Bottom 1 is above top 2 
-                    flag = false; // No collision
-
-                if (flag == true)
-                {
-                    fill[i].screen = false;
-                }
-            }
-        }
-    
     }
-   
-    if (safe == 2)
-    {
-        int left1 = zone2.x;
-        int right1 = zone2.x + zone2.w;
-        int top1 = zone2.y;
-        int bottom1 = zone2.y + zone2.h;
-       
-        // Find edges of rect2
-        for (int i = 0; i < 100; ++i)
-        {
-            bool flag = true;
-            
-            int left2 = asteroid[i].ast.x;
-            int right2 = asteroid[i].ast.x + asteroid[i].ast.w;
-            int top2 = asteroid[i].ast.y;
-            int bottom2 = asteroid[i].ast.y + asteroid[i].ast.h;
-            if (left1 == left2 && right1 == right2 &&
-                top1 == top2 && bottom1 == bottom2)
-            {
-                flag = false;
-            }
-            // Check edges
-            if ( left1 > right2 )// Left 1 is right of right 2
-                flag = false; // No collision
-            
-            if ( right1 < left2 ) // Right 1 is left of left 2
-                flag = false; // No collision
-            
-            if ( top1 > bottom2 ) // Top 1 is below bottom 2
-                flag = false; // No collision
-            
-            if ( bottom1 < top2 ) // Bottom 1 is above top 2 
-                flag = false; // No collision
-
-            if (flag == true)
-            {
-                asteroid[i].screen = false;
-                asteroid[i].ast.x = 680;
-                asteroid[i].ast.y = rand() % 480;
-            }
-        }
-        for (int i = 0; i < 100; ++i)
-        {
-            bool flag = true;
-            if (fill[i].screen)
-            {
-                int left2 = fill[i].ast.x;
-                int right2 = fill[i].ast.x + fill[i].ast.w;
-                int top2 = fill[i].ast.y;
-                int bottom2 = fill[i].ast.y + fill[i].ast.h;
-                
-                // Check edges
-                if ( left1 > right2 )// Left 1 is right of right 2
-                    flag = false; // No collision
-                
-                if ( right1 < left2 ) // Right 1 is left of left 2
-                    flag = false; // No collision
-                
-                if ( top1 > bottom2 ) // Top 1 is below bottom 2
-                    flag = false; // No collision
-                
-                if ( bottom1 < top2 ) // Bottom 1 is above top 2 
-                    flag = false; // No collision
-                
-                if (flag == true)
-                {
-                    fill[i].screen = false;
-                }
-            }
-        }
-    
-    }
-    
-    if (safe == 3)
-    {
-        int left1 = zone3.x;
-        int right1 = zone3.x + zone3.w;
-        int top1 = zone3.y;
-        int bottom1 = zone3.y + zone3.h;
-       
-        // Find edges of rect2
-        for (int i = 0; i < 100; ++i)
-        {
-            bool flag = true;
-            
-            int left2 = asteroid[i].ast.x;
-            int right2 = asteroid[i].ast.x + asteroid[i].ast.w;
-            int top2 = asteroid[i].ast.y;
-            int bottom2 = asteroid[i].ast.y + asteroid[i].ast.h;
-            if (left1 == left2 && right1 == right2 &&
-                top1 == top2 && bottom1 == bottom2)
-            {
-                flag = false;
-            }
-            // Check edges
-            if ( left1 > right2 )// Left 1 is right of right 2
-                flag = false; // No collision
-            
-            if ( right1 < left2 ) // Right 1 is left of left 2
-                flag = false; // No collision
-            
-            if ( top1 > bottom2 ) // Top 1 is below bottom 2
-                flag = false; // No collision
-            
-            if ( bottom1 < top2 ) // Bottom 1 is above top 2 
-                flag = false; // No collision
-
-            if (flag == true)
-            {
-                asteroid[i].screen = false;
-                asteroid[i].ast.x = 680;
-                asteroid[i].ast.y = rand() % 480;
-            }
-        }
-        for (int i = 0; i < 100; ++i)
-        {
-            bool flag = true;
-            if (fill[i].screen)
-            {
-                int left2 = fill[i].ast.x;
-                int right2 = fill[i].ast.x + fill[i].ast.w;
-                int top2 = fill[i].ast.y;
-                int bottom2 = fill[i].ast.y + fill[i].ast.h;
-                
-                // Check edges
-                if ( left1 > right2 )// Left 1 is right of right 2
-                    flag = false; // No collision
-                
-                if ( right1 < left2 ) // Right 1 is left of left 2
-                    flag = false; // No collision
-                
-                if ( top1 > bottom2 ) // Top 1 is below bottom 2
-                    flag = false; // No collision
-                
-                if ( bottom1 < top2 ) // Bottom 1 is above top 2 
-                    flag = false; // No collision
-
-                if (flag == true)
-                {
-                    fill[i].screen = false;
-                }
-            }
-        }
-    
-    }
-   
-    if (safe == 4)
-    {
-        int left1 = zone4.x;
-        int right1 = zone4.x + zone4.w;
-        int top1 = zone4.y;
-        int bottom1 = zone4.y + zone4.h;
-       
-        // Find edges of rect2
-        for (int i = 0; i < 100; ++i)
-        {
-            bool flag = true;
-            
-            int left2 = asteroid[i].ast.x;
-            int right2 = asteroid[i].ast.x + asteroid[i].ast.w;
-            int top2 = asteroid[i].ast.y;
-            int bottom2 = asteroid[i].ast.y + asteroid[i].ast.h;
-            if (left1 == left2 && right1 == right2 &&
-                top1 == top2 && bottom1 == bottom2)
-            {
-                flag = false;
-            }
-            // Check edges
-            if ( left1 > right2 )// Left 1 is right of right 2
-                flag = false; // No collision
-            
-            if ( right1 < left2 ) // Right 1 is left of left 2
-                flag = false; // No collision
-            
-            if ( top1 > bottom2 ) // Top 1 is below bottom 2
-                flag = false; // No collision
-            
-            if ( bottom1 < top2 ) // Bottom 1 is above top 2 
-                flag = false; // No collision
-
-            if (flag == true)
-            {
-                asteroid[i].screen = false;
-                asteroid[i].ast.x = 680;
-                asteroid[i].ast.y = rand() % 480;
-            }
-        }
-        for (int i = 0; i < 100; ++i)
-        {
-            bool flag = true;
-            if (fill[i].screen)
-            {
-                int left2 = fill[i].ast.x;
-                int right2 = fill[i].ast.x + fill[i].ast.w;
-                int top2 = fill[i].ast.y;
-                int bottom2 = fill[i].ast.y + fill[i].ast.h;
-                
-                // Check edges
-                if ( left1 > right2 )// Left 1 is right of right 2
-                    flag = false; // No collision
-                
-                if ( right1 < left2 ) // Right 1 is left of left 2
-                    flag = false; // No collision
-                
-                if ( top1 > bottom2 ) // Top 1 is below bottom 2
-                    flag = false; // No collision
-                
-                if ( bottom1 < top2 ) // Bottom 1 is above top 2 
-                    flag = false; // No collision
-
-                if (flag == true)
-                {
-                    fill[i].screen = false;
-                }
-            }
-        }
-    
-    }
-   
-    if (safe == 5)
-    {
-        int left1 = zone5.x;
-        int right1 = zone5.x + zone5.w;
-        int top1 = zone5.y;
-        int bottom1 = zone5.y + zone5.h;
-       
-        // Find edges of rect2
-        for (int i = 0; i < 100; ++i)
-        {
-            bool flag = true;
-            
-            int left2 = asteroid[i].ast.x;
-            int right2 = asteroid[i].ast.x + asteroid[i].ast.w;
-            int top2 = asteroid[i].ast.y;
-            int bottom2 = asteroid[i].ast.y + asteroid[i].ast.h;
-            if (left1 == left2 && right1 == right2 &&
-                top1 == top2 && bottom1 == bottom2)
-            {
-                flag = false;
-            }
-            // Check edges
-            if ( left1 > right2 )// Left 1 is right of right 2
-                flag = false; // No collision
-            
-            if ( right1 < left2 ) // Right 1 is left of left 2
-                flag = false; // No collision
-            
-            if ( top1 > bottom2 ) // Top 1 is below bottom 2
-                flag = false; // No collision
-            
-            if ( bottom1 < top2 ) // Bottom 1 is above top 2 
-                flag = false; // No collision
-
-            if (flag == true)
-            {
-                asteroid[i].screen = false;
-                asteroid[i].ast.x = 680;
-                asteroid[i].ast.y = rand() % 480;
-            }
-        }
-        for (int i = 0; i < 100; ++i)
-        {
-            bool flag = true;
-            if (fill[i].screen)
-            {
-                int left2 = fill[i].ast.x;
-                int right2 = fill[i].ast.x + fill[i].ast.w;
-                int top2 = fill[i].ast.y;
-                int bottom2 = fill[i].ast.y + fill[i].ast.h;
-                
-                // Check edges
-                if ( left1 > right2 )// Left 1 is right of right 2
-                    flag = false; // No collision
-                
-                if ( right1 < left2 ) // Right 1 is left of left 2
-                    flag = false; // No collision
-                
-                if ( top1 > bottom2 ) // Top 1 is below bottom 2
-                    flag = false; // No collision
-                
-                if ( bottom1 < top2 ) // Bottom 1 is above top 2 
-                    flag = false; // No collision
-
-                if (flag == true)
-                {
-                    fill[i].screen = false;
-                }
-            }
-        }
-    
-    }
-   
-    if (safe == 6)
-    {
-        int left1 = zone6.x;
-        int right1 = zone6.x + zone6.w;
-        int top1 = zone6.y;
-        int bottom1 = zone6.y + zone6.h;
-       
-        // Find edges of rect2
-        for (int i = 0; i < 100; ++i)
-        {
-            bool flag = true;
-            
-            int left2 = asteroid[i].ast.x;
-            int right2 = asteroid[i].ast.x + asteroid[i].ast.w;
-            int top2 = asteroid[i].ast.y;
-            int bottom2 = asteroid[i].ast.y + asteroid[i].ast.h;
-            if (left1 == left2 && right1 == right2 &&
-                top1 == top2 && bottom1 == bottom2)
-            {
-                flag = false;
-            }
-            // Check edges
-            if ( left1 > right2 )// Left 1 is right of right 2
-                flag = false; // No collision
-            
-            if ( right1 < left2 ) // Right 1 is left of left 2
-                flag = false; // No collision
-            
-            if ( top1 > bottom2 ) // Top 1 is below bottom 2
-                flag = false; // No collision
-            
-            if ( bottom1 < top2 ) // Bottom 1 is above top 2 
-                flag = false; // No collision
-
-            if (flag == true)
-            {
-                asteroid[i].screen = false;
-                asteroid[i].ast.x = 680;
-                asteroid[i].ast.y = rand() % 480;
-            }
-        }
-        for (int i = 0; i < 100; ++i)
-        {
-            bool flag = true;
-            if (fill[i].screen)
-            {
-                int left2 = fill[i].ast.x;
-                int right2 = fill[i].ast.x + fill[i].ast.w;
-                int top2 = fill[i].ast.y;
-                int bottom2 = fill[i].ast.y + fill[i].ast.h;
-                
-                // Check edges
-                if ( left1 > right2 )// Left 1 is right of right 2
-                    flag = false; // No collision
-                
-                if ( right1 < left2 ) // Right 1 is left of left 2
-                    flag = false; // No collision
-                
-                if ( top1 > bottom2 ) // Top 1 is below bottom 2
-                    flag = false; // No collision
-                
-                if ( bottom1 < top2 ) // Bottom 1 is above top 2 
-                    flag = false; // No collision
-
-                if (flag == true)
-                {
-                    fill[i].screen = false;
-                }
-            }
-        }
-    
-    }
-    
-    if (safe == 7)
-    {
-        int left1 = zone7.x;
-        int right1 = zone7.x + zone7.w;
-        int top1 = zone7.y;
-        int bottom1 = zone7.y + zone7.h;
-       
-        // Find edges of rect2
-        for (int i = 0; i < 100; ++i)
-        {
-            bool flag = true;
-            
-            int left2 = asteroid[i].ast.x;
-            int right2 = asteroid[i].ast.x + asteroid[i].ast.w;
-            int top2 = asteroid[i].ast.y;
-            int bottom2 = asteroid[i].ast.y + asteroid[i].ast.h;
-            if (left1 == left2 && right1 == right2 &&
-                top1 == top2 && bottom1 == bottom2)
-            {
-                flag = false;
-            }
-            // Check edges
-            if ( left1 > right2 )// Left 1 is right of right 2
-                flag = false; // No collision
-            
-            if ( right1 < left2 ) // Right 1 is left of left 2
-                flag = false; // No collision
-            
-            if ( top1 > bottom2 ) // Top 1 is below bottom 2
-                flag = false; // No collision
-            
-            if ( bottom1 < top2 ) // Bottom 1 is above top 2 
-                flag = false; // No collision
-
-            if (flag == true)
-            {
-                asteroid[i].screen = false;
-                asteroid[i].ast.x = 680;
-                asteroid[i].ast.y = rand() % 480;
-            }
-        }
-        for (int i = 0; i < 100; ++i)
-        {
-            bool flag = true;
-            if (fill[i].screen)
-            {
-                int left2 = fill[i].ast.x;
-                int right2 = fill[i].ast.x + fill[i].ast.w;
-                int top2 = fill[i].ast.y;
-                int bottom2 = fill[i].ast.y + fill[i].ast.h;
-                
-                // Check edges
-                if ( left1 > right2 )// Left 1 is right of right 2
-                    flag = false; // No collision
-                
-                if ( right1 < left2 ) // Right 1 is left of left 2
-                    flag = false; // No collision
-                
-                if ( top1 > bottom2 ) // Top 1 is below bottom 2
-                    flag = false; // No collision
-                
-                if ( bottom1 < top2 ) // Bottom 1 is above top 2 
-                    flag = false; // No collision
-
-                if (flag == true)
-                {
-                    fill[i].screen = false;
-                }
-            }
-        }
-    
-    }
-    
-    if (safe == 8)
-    {
-        int left1 = zone8.x;
-        int right1 = zone8.x + zone8.w;
-        int top1 = zone8.y;
-        int bottom1 = zone8.y + zone8.h;
-       
-        // Find edges of rect2
-        for (int i = 0; i < 100; ++i)
-        {
-            bool flag = true;
-            
-            int left2 = asteroid[i].ast.x;
-            int right2 = asteroid[i].ast.x + asteroid[i].ast.w;
-            int top2 = asteroid[i].ast.y;
-            int bottom2 = asteroid[i].ast.y + asteroid[i].ast.h;
-            if (left1 == left2 && right1 == right2 &&
-                top1 == top2 && bottom1 == bottom2)
-            {
-                flag = false;
-            }
-            // Check edges
-            if ( left1 > right2 )// Left 1 is right of right 2
-                flag = false; // No collision
-            
-            if ( right1 < left2 ) // Right 1 is left of left 2
-                flag = false; // No collision
-            
-            if ( top1 > bottom2 ) // Top 1 is below bottom 2
-                flag = false; // No collision
-            
-            if ( bottom1 < top2 ) // Bottom 1 is above top 2 
-                flag = false; // No collision
-
-            if (flag == true)
-            {
-                asteroid[i].screen = false;
-                asteroid[i].ast.x = 680;
-                asteroid[i].ast.y = rand() % 480;
-            }
-        }
-        for (int i = 0; i < 100; ++i)
-        {
-            bool flag = true;
-            if (fill[i].screen)
-            {
-                int left2 = fill[i].ast.x;
-                int right2 = fill[i].ast.x + fill[i].ast.w;
-                int top2 = fill[i].ast.y;
-                int bottom2 = fill[i].ast.y + fill[i].ast.h;
-                
-               // Check edges
-                if ( left1 > right2 )// Left 1 is right of right 2
-                    flag = false; // No collision
-                
-                if ( right1 < left2 ) // Right 1 is left of left 2
-                    flag = false; // No collision
-                
-                if ( top1 > bottom2 ) // Top 1 is below bottom 2
-                    flag = false; // No collision
-                
-                if ( bottom1 < top2 ) // Bottom 1 is above top 2 
-                    flag = false; // No collision
-                
-                if (flag == true)
-                {
-                    fill[i].screen = false;
-                }
-            }
-        }
-    
-    }
-    
 }
 
 void fill_in(const int & safe)

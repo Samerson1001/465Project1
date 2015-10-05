@@ -12,7 +12,7 @@ const int SCREEN_HEIGHT = 480;
 void terr_generation();
 void terr_print();
 bool overlap_check();
-void safe_zone(int &);
+void safe_zone(const int &);
 void fill_in(const int &);
 bool zone1_check();
 
