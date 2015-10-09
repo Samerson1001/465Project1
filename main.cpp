@@ -6,9 +6,9 @@ and may not be redistributed without written permission.*/
 #include <stdio.h>
 #include <string>
 #include "constants.h"
-#include <SDL/SDL_image.h>
-#include <SDL/SDL_ttf.h>
-#include "SDL/SDL_mixer.h"
+#include <SDL_image.h>
+#include <SDL_ttf.h>
+#include "SDL_mixer.h"
 #include "asteroid.h"
 #include "score.h"
 #include "LTimer.h"
